@@ -1,0 +1,53 @@
+\documentclass[aspectratio=43,mathserif,xcolor={usenames,dvipsnames,svgnames,table},10pt]{beamer}
+
+\usepackage[style=authortitle,natbib]{biblatex}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+% \usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{fit}
+\usetikzlibrary{shapes.callouts}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{matrix}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+\usepackage{csvsimple}
+\usepackage[percent]{overpic}
+\usepackage{xcolor}
+\usepackage{pict2e}
+
+\tikzset{
+  big arrow/.style={
+    decoration={markings,mark=at position 1 with {\arrow[scale=1.4]{latex}}},
+    postaction={decorate},
+    shorten >=1.8pt}}
+\tikzset{
+  big 2arrow/.style={
+    decoration={markings,mark=at position 0 with {\arrow[scale=-1.4]{latex}},mark=at position 1 with {\arrow[scale=1.4]{latex}}},
+    postaction={decorate},
+    shorten >=1.8pt}}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+
+\usepackage[active,pdftex,tightpage]{preview}
+\PreviewEnvironment[]{tikzpicture}
+\PreviewEnvironment[]{pgfpicture}
+\DeclareSymbolFont{symbolsb}{OMS}{cmsy}{m}{n}
+\SetSymbolFont{symbolsb}{bold}{OMS}{cmsy}{b}{n}
+\DeclareSymbolFontAlphabet{\mathcal}{symbolsb}
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+\begin{document}
+
+aaa
+
+<>
+\end{document}

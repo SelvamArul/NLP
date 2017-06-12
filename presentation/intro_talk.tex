@@ -1,0 +1,210 @@
+﻿\documentclass[aspectratio=43,mathserif,xcolor={usenames,dvipsnames,svgnames,table},10pt]{beamer}
+
+\usetheme[titleformat frame=smallcaps]{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{multimedia}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+% \usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{fit}
+\usetikzlibrary{shapes.callouts}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{matrix}
+\usetikzlibrary{spy}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\renewcommand{\footnotesize}{\tiny}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\def\doubleunderline#1{\underline{\underline{#1}}}
+\usepackage{animate}
+\beamertemplatenavigationsymbolsempty
+
+\tikzset{
+  big arrow/.style={
+    decoration={markings,mark=at position 1 with {\arrow[scale=1.4]{latex}}},
+    postaction={decorate},
+    shorten >=2.5pt}}
+\tikzset{
+  big 2arrow/.style={
+    decoration={markings,mark=at position 0 with {\arrow[scale=-1.4]{latex}},mark=at position 1 with {\arrow[scale=1.4]{latex}}},
+    postaction={decorate},
+    shorten >=2.5pt}}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+% 
+\usepackage[style=numeric,natbib]{biblatex}
+\addbibresource{references.bib}
+
+\title[NMT]{Neural Machine Translation}
+\author[Arul Selvam Periyasamy]{Arul Selvam Periyasamy}
+\institute[University of Bonn]{Rheinische Friedrich-Wilhelms-Universit\"at Bonn\\
+Seminar: Natural Language Processing}
+
+\date{\today}
+% \logo{\includegraphics[width=2.5cm]{images/ais_uni_logo.eps}}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{frame}{Machine Translation}
+
+In a probabilistic perspective, machine translation can be formulated the problem of finding a target sentence $y$ that maximizes the conditional probability of $y$ from a given source sentence $x$.
+
+$$ arg\,max _{y}  \,\, p(x|y)$$
+ 
+ 
+In Neural Machine Translation, a parameterized model (a neural network) is trained to maximize the conditional probability of the sentence pairs given parallel training corpus.
+\end{frame}
+
+\begin{frame}{NMT - A historic perspective}
+  \begin{figure}[h]
+    \includegraphics[width=0.9\linewidth]{images/enc_dec.png}  
+    \caption{Encoder-Decoder model for Machine Translation}
+  \end{figure}
+\begin{itemize}
+ \item Fixed size encodings.
+ \item Each language typically required an Encoder and Decoder.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Jointly learning to Align and translate}
+\begin{figure}[h]
+    \includegraphics[width=0.9\linewidth]{images/context.png}  
+    \caption{Encoder-Decoder model with context}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Jointly learning to Align and translate}
+For a input sentence, $X = (x_1,\cdots, x_{T_{x}} )$. The NMT \footfullcite{NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE. Dzmitry Bahdanau, KyungHyun Cho, Yoshua Bengio, ICLR, 2015}
+system consists of,
+  \begin{itemize}
+   \item Encoder and Decoder are multi-layer recurrent neural networks (RNNs).
+   \item Encoder RNN, at each input step t, generates hidden state, $h_t = f(x_t, h_{t-1})$.
+   \item Context vector encodes the input sequence as, $c = q(\{h_1,\cdots,h_{T_x}\})$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Jointly learning to Align and translate}
+\begin{itemize}
+ \item The decoder is trained to predict the next work $y_t$ given the context vector $c$ and all previously predicted words $\{ y_1, \cdots, y_{t-1}\}$
+ $$ p(y) = \prod^{T}_{t=1} p(y_t | \{ y_1, \cdots, y_{t-1}\} ,c ) $$
+ \item With RNN, each conditional probability is modeled as,
+ $$ p(y_t | \{ y_1, \cdots, y_{t-1}\}, c) = g(y_{t-1}, s_t, c) $$ where $s_t$ is the hidden state of the RNN.
+ \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Context Vector}
+  The context vector for a input sentence $i$, is computed as a weighted sum of hidden states of the encoder (also known as \textbf{annotations})
+  $$ c_i = \sum_{j=1}^{T_{x}} \alpha_{ij} h_j$$
+  $$ \alpha_{ij} = \frac{ exp(e_{ij})}{ \sum_{k=1}^{T_x} exp (e_{ik})}$$
+
+where,
+$$ e_{ij} = a(s_{i-1}, h_j)  $$ is the alignment model that scores how well the inputs around the $j$ and the output at the position $i$ match.
+
+A feedforward neural network is used as the alignment model and is \textbf{jointly trained} with all the NMT system as a whole.
+\end{frame}
+
+\begin{frame}{Bi-directional Encoder}
+ 
+ \begin{figure}[h]
+    \includegraphics[width=0.9\linewidth]{images/birnn.png}  
+    \caption{Bi-directional Encoder}
+  \end{figure}
+  \begin{itemize}
+   \item Recurrent connection in both directions.
+   \item Two independent states, updated independently.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Visualization of the context}
+ \begin{figure}[h]
+    \includegraphics[height=8cm]{images/contextres.png}  
+    \caption{Visualization of the context in action}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Seq2Seq Learning}
+ Machine Translation is can treated as a special case of a more generic sequence to sequence modeling.
+ \begin{enumerate}
+  \item Idea is simple: Throw more power at the network.
+  \item Deep LSTM layers.
+  \item No special handling for Machine translation.
+  \item Trained with SGD.
+ \end{enumerate}
+$$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots, y_{t-1})$$
+\end{frame}
+
+
+\begin{frame}{Seq2Seq Learning}
+ \begin{figure}
+    \centering
+    \begin{tabular}{cc}
+	\includegraphics[width=.49\linewidth]{images/seq2seq.png} &
+	\includegraphics[width=.49\linewidth]{images/seq2seqDeep.png} \\
+	\footnotesize(a) Seq2Seq model & \footnotesize(b) More powerful model \\
+    \end{tabular}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Google NMT}
+ \begin{figure}[h]
+    \includegraphics[height=7.5cm]{images/gnmt_1.png}  
+    \caption{ Simple Encoder-Decoder but more deeper as in Seq2Seq, and Context}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Google NMT}
+ \begin{figure}[h]
+    \includegraphics[height=7.5cm]{images/gnmt_1.png}  
+    \caption{ Simple Encoder-Decoder but more deeper as in Seq2Seq and Context}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Residual learning}
+  \begin{figure}[h]
+    \includegraphics[width=.9\linewidth]{images/residual.png}  
+    \caption{ Residual networks}
+  \end{figure}
+  \vspace{-1cm}
+  Residual connections enables training of very deep networks. \footfullcite{Deep Residual Learning for Image Recognition. Kaiming He, Xiangyu	Zhang, Shaoqing	 Ren, & Jian Sun. CVPR, 2016}
+\end{frame}
+
+\begin{frame}{Google NMT with Residual connection}
+ \begin{figure}[h]
+    \includegraphics[height=7.5cm]{images/residual_gnmt.png}  
+    \caption{ GNMT with residual connections.}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Conclusion}
+Neural Machine Translation systems,
+\begin{itemize} 
+ \item Are State of the Art in Machine translation.
+ \item Greatly benefited from the Neural Network research by other communities.
+ \item In production by companies like Google, Microsoft, Facebook, etc.
+\end{itemize}
+
+\end{frame}
+
+\end{document}
