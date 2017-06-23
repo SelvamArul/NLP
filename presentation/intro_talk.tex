@@ -376,8 +376,11 @@ $$P(y = 0 | x) = 1 - h_w(x) = 1 - P(y = 1 | x)$$
 \end{section}
 
 \begin{frame}{Neural Machine Translation}
- $$ arg\,max _{y}  \,\, p(x|y)$$
- In Neural Machine Translation, a parameterized model (a neural network) is trained to maximize the conditional probability of the sentence pairs given parallel training corpus.
+
+$$ arg\,max _{y}  \,\, p(y|x)$$
+ 
+ 
+In Neural Machine Translation, a parameterized model (a neural network) is trained to maximize the conditional probability of the sentence pairs given parallel training corpus.
 \end{frame}
 
 \begin{frame}{NMT - A historic perspective}
@@ -507,14 +510,6 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
  \item<+-> Also, adds almost all the nice ideas in Deep learning research in the last few years.
  \item<+-> Not just a research idea but already serves billions of queries a day.
 \end{itemize}
-\end{frame}
-
-
-\begin{frame}{Google NMT}
- \begin{figure}[h]
-    \includegraphics[height=7.5cm]{images/gnmt_1.png}  
-    \caption{Simple Encoder-Decoder but more deeper as in Seq2Seq, and Context}
-  \end{figure}
 \end{frame}
 
 
