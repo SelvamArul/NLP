@@ -162,7 +162,74 @@ $$P(y = 0 | x) = 1 - h_w(x) = 1 - P(y = 1 | x)$$
     \includegraphics[width=0.7\linewidth]{images/dnn.png}  
     \caption{Deep Neural Networks}
   \end{figure}
-  MLPs with lots of layers (Just a fancy name).
+  \begin{itemize}
+   \item<+-> Simply adding layers won't work.
+   \item<+-> Too many parameters to train.
+   \item<+-> Need smart architectures to capture additional priors.
+   \item<+-> Two most commonly used architectures are CNNs and RNNs.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Convolutional Neural Networks}
+\begin{figure}[h]
+    \includegraphics[width=0.7\linewidth]{images/cnn.png}  
+    \caption{Convolutional Neural Networks}
+  \end{figure}
+\begin{itemize}
+\item<+-> Each layers learns a set of convolution kernels.
+\item<+-> Captures a very important prior --smoothness prior-- known to computer vision community for a very long time.
+\item<+-> Much less number of parameters.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Recurrent Neural Networks}
+\begin{figure}[h]
+    \includegraphics[width=0.7\linewidth]{images/rnn.png}  
+    \caption{Recurrent Neural Networks}
+  \end{figure}
+  
+\begin{itemize}
+\item<+-> Used for predicting sequential data 
+\item<+-> Captures dependences across time frames.
+\item<+-> Usually harder to train (Vanishing Gradients).
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{LSTM}
+ \begin{figure}[h]
+    \includegraphics[width=0.4\linewidth]{images/rnn_n.png}  
+    \caption{Recurrent Neural Networks}
+  \end{figure}
+   \begin{figure}[h]
+    \includegraphics[width=0.6\linewidth]{images/lstm.png}  
+    \caption{Long Short Term Memory}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{LSTM}
+ \begin{figure}[h]
+    \includegraphics[width=0.6\linewidth]{images/lstm_forget.png}  
+    \caption{LSTM Forget gate}
+  \end{figure}
+   \begin{figure}[h]
+    \includegraphics[width=0.6\linewidth]{images/lstm_add.png}  
+    \caption{LSTM new content}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{LSTM}
+ \begin{figure}[h]
+    \includegraphics[width=0.6\linewidth]{images/lstm_add1.png}  
+    \caption{LSTM Add gate}
+  \end{figure}
+   \begin{figure}[h]
+    \includegraphics[width=0.6\linewidth]{images/lstm_output.png}  
+    \caption{LSTM Output Gate}
+  \end{figure}
 \end{frame}
 
 
