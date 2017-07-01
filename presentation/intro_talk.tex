@@ -248,8 +248,8 @@ $$P(y = 0 | x) = 1 - h_w(x) = 1 - P(y = 1 | x)$$
     \caption{Encoder-Decoder model for Machine Translation}
   \end{figure}
 \begin{itemize}
- \item Fixed size encodings.
- \item Each language typically required an Encoder and Decoder.
+ \item<+-> Fixed size encodings.
+ \item<+-> Each language typically required an Encoder and Decoder.
 \end{itemize}
 \end{frame}
 
@@ -264,9 +264,9 @@ $$P(y = 0 | x) = 1 - h_w(x) = 1 - P(y = 1 | x)$$
 For a input sentence, $X = (x_1,\cdots, x_{T_{x}} )$. The NMT \footfullcite{NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE. Dzmitry Bahdanau, KyungHyun Cho, Yoshua Bengio, ICLR, 2015}
 system consists of,
   \begin{itemize}
-   \item Encoder and Decoder are multi-layer recurrent neural networks (RNNs).
-   \item Encoder RNN, at each input step t, generates hidden state, $h_t = f(x_t, h_{t-1})$.
-   \item Context vector encodes the input sequence as, $c = q(\{h_1,\cdots,h_{T_x}\})$.
+   \item<+-> Encoder and Decoder are multi-layer recurrent neural networks (RNNs).
+   \item<+-> Encoder RNN, at each input step t, generates hidden state, $h_t = f(x_t, h_{t-1})$.
+   \item<+-> Context vector encodes the input sequence as, $c = q(\{h_1,\cdots,h_{T_x}\})$.
   \end{itemize}
 \end{frame}
 
@@ -292,18 +292,6 @@ $$ e_{ij} = a(s_{i-1}, h_j)  $$ is the alignment model that scores how well the 
 A feedforward neural network is used as the alignment model and is \textbf{jointly trained} with all the NMT system as a whole.
 \end{frame}
 
-\begin{frame}{Bi-directional Encoder}
- 
- \begin{figure}[h]
-    \includegraphics[width=0.9\linewidth]{images/birnn.png}  
-    \caption{Bi-directional Encoder}
-  \end{figure}
-  \begin{itemize}
-   \item Recurrent connection in both directions.
-   \item Two independent states, updated independently.
-  \end{itemize}
-\end{frame}
-
 \begin{frame}{Visualization of the context}
  \begin{figure}[h]
     \includegraphics[height=8cm]{images/contextres.png}  
@@ -311,13 +299,25 @@ A feedforward neural network is used as the alignment model and is \textbf{joint
   \end{figure}
 \end{frame}
 
+\begin{frame}{Bi-directional Encoder}
+ 
+ \begin{figure}[h]
+    \includegraphics[width=0.9\linewidth]{images/birnn.png}  
+    \caption{Bi-directional Encoder}
+  \end{figure}
+  \begin{itemize}
+   \item<+-> Recurrent connection in both directions.
+   \item<+-> Two independent states, updated independently.
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Seq2Seq Learning}
  Machine Translation is can treated as a special case of a more generic sequence to sequence modeling.
  \begin{enumerate}
-  \item Idea is simple: Throw more power at the network.
-  \item Deep LSTM layers.
-  \item No special handling for Machine translation.
-  \item Trained with SGD.
+  \item<+-> Idea is simple: Throw more power at the network.
+  \item<+-> Deep LSTM layers.
+  \item<+-> No special handling for Machine translation.
+  \item<+-> Trained with SGD.
  \end{enumerate}
 $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots, y_{t-1})$$
 \end{frame}
@@ -334,6 +334,22 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
     \end{figure}
 \end{frame}
 
+\begin{frame}{Seq2Seq Learning}
+\begin{itemize}
+ \item<+->  Trained in WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words.
+ \item<+->  Used 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language
+ \item<+->  Every out-of-vocabulary word was replaced with a special “UNK” token
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Seq2Seq Learning}
+ Architecture details:
+\begin{itemize}
+ \item<+->  4 LSTM layers.
+ \item<+->  1000 LSTM cells in each layer.
+ \item<+->  1000 dimensional word embeddings.
+\end{itemize}
+\end{frame}
 
 \begin{frame}{Google NMT}
  \begin{figure}[h]
@@ -342,13 +358,6 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
   \end{figure}
 \end{frame}
 
-
-\begin{frame}{Google NMT}
- \begin{figure}[h]
-    \includegraphics[height=7.5cm]{images/gnmt_1.png}  
-    \caption{ Simple Encoder-Decoder but more deeper as in Seq2Seq and Context}
-  \end{figure}
-\end{frame}
 
 
 \begin{frame}{Residual learning}
@@ -367,6 +376,16 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
   \end{figure}
 \end{frame}
 
+\begin{frame}{Google NMT}
+Google NMY properties
+\begin{itemize}
+ \item<+-> One Encoder and one Decoder for all the languages.
+ \item<+-> The input language are encoded usign word3vec for all languages.
+ \item<+-> One additional token (<__EN__>, <__FR__>, <__DE__>, <__ES__>) indicationg the target language.
+ \item<+-> One gaint model that runs all Google translate queries.
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Conclusion}
 Neural Machine Translation systems,
 \begin{itemize} 
@@ -374,11 +393,18 @@ Neural Machine Translation systems,
  \item Greatly benefited from the Neural Network research by other communities.
  \item In production by companies like Google, Microsoft, Facebook, etc.
 \end{itemize}
-
 \end{frame}
 
 
-\begin{frame}{Referencee}
+
+\begin{frame}{TODO}
+\begin{itemize} 
+ \item BLEU metric
+ \item some results for all the papers
+ \item PBMT
+\end{itemize}
+\end{frame}
+\begin{frame}{References}
  http://liris.cnrs.fr/natalia.neverova/nslides/presentation_softshake_151022_novideos.pdf
 \end{frame}
 
