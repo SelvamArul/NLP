@@ -62,14 +62,116 @@ Seminar: Natural Language Processing}
 \maketitle
 
 
+\begin{frame}{Agenda}
+ \begin{itemize}
+  \item<+-> Introduction to Machine Translation
+  \item<+-> Statistical Phrase-Based Translation
+  \item<+-> Introduction to Deep Learning
+  \item<+-> Neural Machine Translation
+
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Motivation}
+\begin{itemize}
+ \item<+-> Translation: The process of translating words or text from one language into another (OED).
+ \item<+-> Machine Translation: Translation carried out by a computer (OED).
+ \item<+-> Why do we need it?
+ \item<+-> Do I need to convince that we need machine translation?
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Machine Translation}
 
 In a probabilistic perspective, machine translation can be formulated the problem of finding a target sentence $y$ that maximizes the conditional probability of $y$ from a given source sentence $x$.
 
 $$ arg\,max _{y}  \,\, p(x|y)$$
- 
- 
-In Neural Machine Translation, a parameterized model (a neural network) is trained to maximize the conditional probability of the sentence pairs given parallel training corpus.
+\end{frame}
+
+
+\begin{section}{Introduction to Deep Learning}
+\end{section}
+
+\begin{frame}{Machine Learning (Supervised)}
+ \begin{figure}[h]
+    \includegraphics[width=0.9\linewidth]{images/ml.png}  
+    \caption{Traditional Supervised learning}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Deep Learning (Supervised)}
+ \begin{figure}[h]
+    \includegraphics[width=0.9\linewidth]{images/dl.png}  
+    \caption{Deep learning}
+  \end{figure}
+ \begin{itemize}
+  \item<+-> Hierarchical representations of features.
+  \item<+-> Joint learning of representation.
+  \item<+-> Increased levels of abstraction.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Perceptron}
+ \begin{figure}[h]
+    \includegraphics[width=0.5\linewidth]{images/perceptron.png}  
+    \caption{A perceptron (close to a biological neuron)}
+  \end{figure}
+  $$ y(x) = f( W^T x )$$
+\end{frame}
+
+\begin{frame}{Logistic Regression}
+ \begin{figure}[h]
+    \includegraphics[width=0.5\linewidth]{images/lr.png}  
+    \caption{A perceptron (A collection of perceptrons)}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Logistic Regression}
+Binary classification:
+$$P(y = 1 | x) = h_w(x) = \frac{1}{1 + exp(-W^T x)}$$
+$$P(y = 0 | x) = 1 - h_w(x) = 1 - P(y = 1 | x)$$
+\end{frame}
+
+\begin{frame}{Logistic Regression}
+ Cost function: 
+ $$ J(w) = - \sum_{i} ( y^i log(h_w(x^i)) + (1 - y^i) log(1 - h_w(x^i))  ) $$
+ Learning Weights : Gradient Descent
+ $$\nabla_w J(w) = \frac{\partial J(w)}{\partial w_j} = \sum_i x^i_j (h_w(x^i) - y^i) $$
+\end{frame}
+
+\begin{frame}{Gradient Descent}
+\begin{figure}[h]
+    \includegraphics[width=0.7\linewidth]{images/gd.png}  
+    \caption{Update weights in the direction of negative gradient.}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Multi Layer Perceptron}
+\begin{figure}[h]
+    \includegraphics[width=0.7\linewidth]{images/mlp.png}  
+    \caption{Multiple layers of perceptron}
+  \end{figure}
+  Learning weights: Same as before but apply chain rule.
+  $$ \frac{\partial x}{\partial y}  = \frac{\partial x}{\partial z} * \frac{\partial z}{\partial y} $$
+\end{frame}
+
+\begin{frame}{Deep Neural Networks}
+ \begin{figure}[h]
+    \includegraphics[width=0.7\linewidth]{images/dnn.png}  
+    \caption{Deep Neural Networks}
+  \end{figure}
+  MLPs with lots of layers (Just a fancy name).
+\end{frame}
+
+
+\begin{section}{Neural Machine Translation}
+\end{section}
+
+\begin{frame}{Neural Machine Translation}
+ $$ arg\,max _{y}  \,\, p(x|y)$$
+ In Neural Machine Translation, a parameterized model (a neural network) is trained to maximize the conditional probability of the sentence pairs given parallel training corpus.
 \end{frame}
 
 \begin{frame}{NMT - A historic perspective}
@@ -206,5 +308,11 @@ Neural Machine Translation systems,
 \end{itemize}
 
 \end{frame}
+
+
+\begin{frame}{Referencee}
+ http://liris.cnrs.fr/natalia.neverova/nslides/presentation_softshake_151022_novideos.pdf
+\end{frame}
+
 
 \end{document}
