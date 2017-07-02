@@ -121,7 +121,7 @@ $$ arg\,max _{y}  \,\, p(x|y)$$
 \item<+-> Reference 2: It is the guiding principle which guarantees the military forces always being under the command of the Party.
 \item<+-> Reference 3: It is the practical guide for the army always to heed directions of the party.
 
-\item<+-> Clearly candidate 1 is better.
+\item<+-> \textbf{ \textcolor{red}{Clearly candidate 1 is better.}}
 \end{itemize}
 \end{frame}
 
@@ -391,6 +391,8 @@ $$P(y = 0 | x) = 1 - h_w(x) = 1 - P(y = 1 | x)$$
 \end{itemize}
 \end{frame}
 
+\begin{section}{Jointly learning to Align and translate}
+\end{section}
 \begin{frame}{Jointly learning to Align and translate}
 \begin{figure}[h]
     \includegraphics[width=0.9\linewidth]{images/context.png}  
@@ -449,6 +451,10 @@ A feedforward neural network is used as the alignment model and is \textbf{joint
   \end{itemize}
 \end{frame}
 
+
+\begin{section}{Seq2Seq Learning}
+\end{section}
+
 \begin{frame}{Seq2Seq Learning}
  Machine Translation is can treated as a special case of a more generic sequence to sequence modeling.
  \begin{enumerate}
@@ -490,10 +496,24 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
 \end{itemize}
 \end{frame}
 
+
+\begin{section}{Google NMT}
+\end{section}
+
+\begin{frame}{Google NMT}
+\begin{itemize}
+ \item<+-> Paper describing all the details about the Google's MT system.
+ \item<+-> Heavily borrows from the previous two papers.
+ \item<+-> Also, adds almost all the nice ideas in Deep learning research in the last few years.
+ \item<+-> Not just a research idea but already serves billions of queries a day.
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Google NMT}
  \begin{figure}[h]
     \includegraphics[height=7.5cm]{images/gnmt_1.png}  
-    \caption{ Simple Encoder-Decoder but more deeper as in Seq2Seq, and Context}
+    \caption{Simple Encoder-Decoder but more deeper as in Seq2Seq, and Context}
   \end{figure}
 \end{frame}
 
@@ -522,7 +542,7 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
  \item<+-> One Encoder and one Decoder for all the languages.
  \item<+-> This joint training of languages improves accuracy for languages for which not much training data exist.
  \item<+-> The input language are encoded using word2vec for all languages.
- \item<+-> One additional token $(<\_\_EN\_\_>, <\_\_FR\_\_>, <\_\_DE\_\_>, <\_\_ES\_\_>)$ indicating the target language.
+ \item<+-> One additional token $(<\_\_EN\_\_>, <\_\_FR\_\_>, <\_\_DE\_\_>, <\_\_ES\_\_>)$ indicating the target language to be generated.
  \item<+-> One giant model that runs all Google translate queries.
 \end{itemize}
 \end{frame}
@@ -539,7 +559,8 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
 \begin{frame}{Conclusion}
  \begin{itemize}
   \item<+-> Actually, I lied to you all.
-  \item<+-> \textquotedblleft Attention Is All You Need\textquotedblright arxiv preprint from Google threw away all LSTMS, Residual connections, etc., but managed to achieve BLEU score of 41.0 with only \textcolor{red} {feedforward connections and attention.}
+  \item<+-> Maybe, we don't need such a complex network like GNMT to achieve better results.
+  \item<+-> \textquotedblleft Attention Is All You Need\textquotedblright arxiv preprint from Google threw away all LSTMS, Residual connections, etc., but managed to achieve BLEU score of 41.0 with  \textcolor{red} {only feedforward connections and attention.}
  \end{itemize}
 
 \end{frame}
