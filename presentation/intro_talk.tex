@@ -1,4 +1,4 @@
-﻿\documentclass[aspectratio=43,mathserif,xcolor={usenames,dvipsnames,svgnames,table},10pt]{beamer}
+﻿\documentclass[table,aspectratio=43,mathserif,xcolor={usenames,dvipsnames,svgnames,table},10pt]{beamer}
 
 \usetheme[titleformat frame=smallcaps]{metropolis}
 \usepackage{appendixnumberbeamer}
@@ -66,6 +66,7 @@ Seminar: Natural Language Processing}
 \begin{frame}{Agenda}
  \begin{itemize}
   \item<+-> Introduction to Machine Translation
+  \item<+-> Evaluation Metric
   \item<+-> Statistical Phrase-Based Translation
   \item<+-> Introduction to Deep Learning
   \item<+-> Neural Machine Translation
@@ -88,6 +89,112 @@ Seminar: Natural Language Processing}
 In a probabilistic perspective, machine translation can be formulated the problem of finding a target sentence $y$ that maximizes the conditional probability of $y$ from a given source sentence $x$.
 
 $$ arg\,max _{y}  \,\, p(x|y)$$
+\end{frame}
+
+
+\begin{section}{Evaluation Metric}
+\end{section}
+
+\begin{frame}{Evaluation Metric}
+\begin{itemize}
+ \item<+-> Evaluating the quality of machine translation is a hard task.
+ \item<+-> No one best traget sentence possible.
+ \item<+-> Even human translators don't translate to the same target sentence.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Evaluation Metric}
+\begin{itemize}
+ \item<+-> BLEU- Bilingual Evaluation Understudy is the most commonly used error metric.
+ \item<+-> Depends on modified n-gram precision (or co-occurrence).
+ \item<+-> Needs lots of target sentences for better results.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{BLEU}
+
+\begin{itemize}
+\item Candidate 1: It is a guide to action which ensures that the military always obey the commands the party.
+\item Candidate 2: It is to insure the troops forever hearing the activity guidebook that party direct.
+
+\item<+-> Reference 1: It is a guide to action that ensures that the military will forever heed Party commands. 
+\item<+-> Reference 2: It is the guiding principle which guarantees the military forces always being under the command of the Party.
+\item<+-> Reference 3: It is the practical guide for the army always to heed directions of the party.
+
+\item<+-> Clearly candidate 1 is better.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{BLEU}
+\textbf{To rank candidate 1 better than 2,}
+\begin{itemize}
+\item<+-> Just count the number of N-gram matches.
+\item<+-> The match could be position-independent.
+\item<+-> Reference could be matched multiple times.
+\item<+-> No need to be linguistically-motivated.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{BLEU}
+
+Candidate 1: \textcolor{red} {It is a guide to action which ensures that the military always} obey  \textcolor{red} {the commands of the party}.
+\\
+Reference 1: \textcolor{red} {It is a guide to action} that \textcolor{red} {ensures that the military} will forever heed \textcolor{red} {Party commands}. 
+\\
+Reference 2: It is the guiding principle \textcolor{red} {which} guarantees \textcolor{red} {the} military forces \textcolor{red} {always} being under \textcolor{red} {the} command \textcolor{red} {of} the Party.
+\\
+Reference 3: It is the practical guide for the army always to heed directions of the party.
+\\
+N-gram Precision : 17
+\end{frame}
+
+\begin{frame}{BLEU}
+
+Candidate 2: \textcolor{red} {It is to} insure \textcolor{red} {the} troops \textcolor{red} {forever} hearing \textcolor{red} {the} activity guidebook \textcolor{red} {that party} direct. 
+\\
+Reference 1: \textcolor{red} {It is} a guide \textcolor{red} {to} action \textcolor{red} {that} ensures that \textcolor{red} {the} military will \textcolor{red} {forever} heed \textcolor{red} {Party} commands. 
+\\
+Reference 2: It is \textcolor{red} {the} guiding principle which guarantees the military forces always being under the command of the Party.
+\\
+Reference 3: It is the practical guide for the army always to heed directions of the party.
+\\
+N-gram Precision : 8
+\end{frame}
+
+\begin{frame}{BLEU}
+\textbf{Issues with N-gram precision}
+Candidate: \textcolor{red} {the the the the the the the.} \\
+Reference 1: \textcolor{red} {The} cat is on the mat. \\
+Reference 2: There is a cat on the mat.\\
+
+\textbf{ \textcolor{red}{N-gram Precision : 7 and BLEU : 1}}
+\end{frame}
+
+
+\begin{frame}{BLEU}
+ \begin{table}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Algorithm}  & \textbf{Example}  \\ \hline
+        Count the max number of times       &       Ref 1: The cat is on the mat.  \\
+        a word occurs in any single reference &   Ref 2: There is a cat on the mat. \\
+        &“the” has max count 2         \\ % <===== note the empty cells in this line
+ \hline
+	Clip the total count of & Unigram count = 7 \\
+	each candidate word & Clipped unigram count = 2 \\
+	&Total no. of counts = 7 \\
+\hline
+	Modified N-gram & Modified-ngram precision: \\
+	Precision equal to & Clipped count = 2 \\
+	Clipped count/ & Total no. of counts =7\\
+	Total no. of candidate word & Modified-ngram precision = 2/7\\
+\hline	
+
+ 
+
+    \end{tabular}
+\end{table}
 \end{frame}
 
 
