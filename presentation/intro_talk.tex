@@ -190,13 +190,44 @@ Reference 2: There is a cat on the mat.\\
 	Clipped count/ & Total no. of counts =7\\
 	Total no. of candidate word & Modified-ngram precision = 2/7\\
 \hline	
-
- 
-
     \end{tabular}
+N-grams with different Ns are used but 4 is most common metric.
 \end{table}
 \end{frame}
 
+\begin{section}{Phrase Based Machine Translation}
+\end{section}
+
+\begin{frame}{Phrase Based Machine Translation}
+ \begin{itemize}
+  \item<+-> Follows the paradigm of Statistical Machine Translation.
+  \item<+-> Works at the level of phrases instead of words.
+  \item<+-> Lots of individual components but the core idea is learning statistical patterns in training data.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Phrase Based Machine Translation}
+\textbf{Some of the individual components:}
+ \begin{itemize}
+  \item<+-> Sentence alignment: Gale and Church Algorithm based on Dynamic programming.
+  \item<+-> Word alignment: Expectation Maximization.
+  \item<+-> Phrases generation: Heuristic based complex algorithms.
+  \item<+-> Phrase lookup: Statistical matching.
+  \item<+-> Beam search: For generating target sentence.
+  \item<+-> \textcolor{red} {Beam search is a generic algorithm that is used even in the latest NMT systems.}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Phrase Based Machine Translation}
+\textbf{Some properties:}
+ \begin{itemize}
+  \item<+-> Achieved a BLEU score of 28.0 on WMT’14 English-to-French dataset.
+  \item<+-> Needs one model for each language pair.
+  \item<+-> Google avoided the need for combinatorial number of models by always translating to English as intermediate language.
+  \item<+-> Thus in practice, the accuracy dropped further. 
+  \end{itemize}
+
+\end{frame}
 
 \begin{section}{Introduction to Deep Learning}
 \end{section}
@@ -455,6 +486,7 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
  \item<+->  4 LSTM layers.
  \item<+->  1000 LSTM cells in each layer.
  \item<+->  1000 dimensional word embeddings.
+ \item<+->  Achieved BLEU score of 33.3 on WMT’14 English-to-French dataset.
 \end{itemize}
 \end{frame}
 
@@ -484,35 +516,32 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
 \end{frame}
 
 \begin{frame}{Google NMT}
-Google NMY properties
+\textbf{Google NMT properties}
 \begin{itemize}
+ \item<+-> Achieved a BLEU score of 38.95 BLEU on WMT’14 English-to-French dataset. 
  \item<+-> One Encoder and one Decoder for all the languages.
- \item<+-> The input language are encoded usign word3vec for all languages.
- \item<+-> One additional token (<__EN__>, <__FR__>, <__DE__>, <__ES__>) indicationg the target language.
- \item<+-> One gaint model that runs all Google translate queries.
+ \item<+-> This joint training of languages improves accuracy for languages for which not much training data exist.
+ \item<+-> The input language are encoded using word2vec for all languages.
+ \item<+-> One additional token $(<\_\_EN\_\_>, <\_\_FR\_\_>, <\_\_DE\_\_>, <\_\_ES\_\_>)$ indicating the target language.
+ \item<+-> One giant model that runs all Google translate queries.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusion}
-Neural Machine Translation systems,
+\textbf{Neural Machine Translation systems,}
 \begin{itemize} 
- \item Are State of the Art in Machine translation.
- \item Greatly benefited from the Neural Network research by other communities.
- \item In production by companies like Google, Microsoft, Facebook, etc.
+ \item Are State-of-the-art in machine translation.
+ \item Greatly benefited from the neural network research by other communities.
+ \item Used in production by companies like Google, Microsoft, Facebook, etc.
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Conclusion}
+ \begin{itemize}
+  \item<+-> Actually, I lied to you all.
+  \item<+-> \textquotedblleft Attention Is All You Need\textquotedblright arxiv preprint from Google threw away all LSTMS, Residual connections, etc., but managed to achieve BLEU score of 41.0 with only \textcolor{red} {feedforward connections and attention.}
+ \end{itemize}
 
-
-\begin{frame}{TODO}
-\begin{itemize} 
- \item BLEU metric
- \item some results for all the papers
- \item PBMT
-\end{itemize}
-\end{frame}
-\begin{frame}{References}
- http://liris.cnrs.fr/natalia.neverova/nslides/presentation_softshake_151022_novideos.pdf
 \end{frame}
 
 
