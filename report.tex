@@ -6,7 +6,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{color}
-\usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{mathtools}
 \usepackage{algorithm2e}
 \usepackage{graphicx}
@@ -15,6 +15,7 @@
 \usepackage{pgfplots}
 \usepackage{xcolor}
 \usepackage[justification=centering]{caption}
+\usepackage{flexisym}
 \newcommand\TODO[1]{\textcolor{red}{#1}}
 \pgfplotsset{compat=1.9}
 \usetikzlibrary{arrows}
@@ -85,7 +86,7 @@
 \newcommand{\vx}{\vec{x}}
 \newcommand{\vy}{\vec{y}}
 \newcommand{\vz}{\vec{z}}
-
+\newcommand*{\everymodeprime}{\ensuremath{\prime}}
 \begin{document}
 
 \title{Neural Machine Translation}
@@ -125,7 +126,9 @@ Mathematically, a perceptron with the weight matrix $A$ and the threshold $T$ fo
 \end{cases}
 \]
 
-A layer has many number of neurons and many layers are stacked one on top of the other to form a MLP.  
+A layer has many number of neurons and many layers are stacked one on top of the other to form a MLP. An MLP with very many layers is called as Deep Neural Network(DNN). In the following section we will discuss the properties of DNNs and how they are useful in the context of supervised machine learning.
+
+
 \begin{figure}
     \includegraphics[width=.99\linewidth]{img/bioneuron.jpg}  
     \caption{A biological neuron.}
@@ -144,8 +147,23 @@ A layer has many number of neurons and many layers are stacked one on top of the
     \caption{Layered representation in an MLP}
     \label{fig:ann}
 \end{figure}
+
+
+\subsection{Supervised learning}
+Supervised learning is the problem of predicting an new output $y\everymodeprime$  for a new input $x\everymodeprime$, and set of training data that provides a set of input and output $\{x \mapsto y\}$. Most of the supervised learning problems can be formulated as either a classification or regression problem. Classification is the problem of predicting the label for a given  $x\everymodeprime$ among a set of given labels $\{Y\}$ while regression of predicting a continuous  valued output for a given input. The usual way of doing supervised learning is to extract features from the given data and train a model to perform classification or regression. 
+
+
+$$x \xrightarrow[\text{Feature extraction}]{ \mathbb{D}(x) } x\everymodeprime _{intermediate} \xrightarrow[\text{classifer/regressor}]{\mathbb{F}(x\everymodeprime | \theta)}   y$$
+
+The power of the DNNs lie in the fact that the models learns the features directly from the given training data and avoids hand engineered features. 
+$$ x \xrightarrow[ \text{hierachical}] { \mathbb{M}(x | \Theta) } y$$
 \bibliographystyle{plain}
+
+The DNNs with neurons in one layers being connected to all the neurons in the next layer are called Feed Forward Networks. The feed forward networks are harder to train since they have lots of parameters. To make a the DNNs learn useful representation for performing supervised learning, we need special types of connections between the neurons. Two of the most commonly used DNN architectures are Convolutional Neural Networks(CNN) and Recurrent Neural Networks(RNN). In the following section we will discuss these architectures in detail.
+
+
 \bibliography{literature}
 \end{document}
+
 
 
