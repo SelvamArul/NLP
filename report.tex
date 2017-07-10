@@ -16,7 +16,6 @@
 \usepackage{xcolor}
 \usepackage[justification=centering]{caption}
 \usepackage{flexisym}
-\newcommand\TODO[1]{\textcolor{red}{#1}}
 \pgfplotsset{compat=1.9}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning,calc}
@@ -28,8 +27,21 @@
 \usetikzlibrary{matrix}
 \usetikzlibrary{spy}
 
+\usepackage{expl3}
+\ExplSyntaxOn
+\newcommand\latinabbrev[1]{
+  \peek_meaning:NTF . {% Same as \@ifnextchar
+    #1\@}%
+  { \peek_catcode:NTF a {% Check whether next char has same catcode as \'a, i.e., is a letter
+      #1.\@ }%
+    {#1.\@}}}
+\ExplSyntaxOff
+
+
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
 \def\doubleunderline#1{\underline{\underline{#1}}}
+\def\ie{\latinabbrev{i.e}}
 \renewcommand{\vec}[1]{\boldsymbol{#1}}
 \newcommand{\p}[1]{\left(#1\right)}
 \newcommand{\f}[2]{\frac{#1}{#2}}
@@ -86,7 +98,10 @@
 \newcommand{\vx}{\vec{x}}
 \newcommand{\vy}{\vec{y}}
 \newcommand{\vz}{\vec{z}}
+
+
 \newcommand*{\everymodeprime}{\ensuremath{\prime}}
+
 \begin{document}
 
 \title{Neural Machine Translation}
@@ -153,14 +168,103 @@ A layer has many number of neurons and many layers are stacked one on top of the
 Supervised learning is the problem of predicting an new output $y\everymodeprime$  for a new input $x\everymodeprime$, and set of training data that provides a set of input and output $\{x \mapsto y\}$. Most of the supervised learning problems can be formulated as either a classification or regression problem. Classification is the problem of predicting the label for a given  $x\everymodeprime$ among a set of given labels $\{Y\}$ while regression of predicting a continuous  valued output for a given input. The usual way of doing supervised learning is to extract features from the given data and train a model to perform classification or regression. 
 
 
+
 $$x \xrightarrow[\text{Feature extraction}]{ \mathbb{D}(x) } x\everymodeprime _{intermediate} \xrightarrow[\text{classifer/regressor}]{\mathbb{F}(x\everymodeprime | \theta)}   y$$
 
 The power of the DNNs lie in the fact that the models learns the features directly from the given training data and avoids hand engineered features. 
 $$ x \xrightarrow[ \text{hierachical}] { \mathbb{M}(x | \Theta) } y$$
-\bibliographystyle{plain}
 
 The DNNs with neurons in one layers being connected to all the neurons in the next layer are called Feed Forward Networks. The feed forward networks are harder to train since they have lots of parameters. To make a the DNNs learn useful representation for performing supervised learning, we need special types of connections between the neurons. Two of the most commonly used DNN architectures are Convolutional Neural Networks(CNN) and Recurrent Neural Networks(RNN). In the following section we will discuss these architectures in detail.
 
+\subsubsection{CNN}
+todo
+
+The Convolutional NN are shown in \ref{fig:cnn}
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/cnn.png}  
+    \caption{CNN}
+    \label{fig:cnn}
+\end{figure}
+
+
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/rnn.png}  
+    \caption{Recurrent connections in a RNN}
+    \label{fig:rnn}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/lstm_forget.png}  
+    \caption{Forget gate in LSTM} 
+    \label{fig:lstm_forget}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/lstm_add.png}  
+    \caption{Add gate computing parts to be to modified in LSTM} 
+    \label{fig:lstm_add}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/lstm_add1.png}  
+    \caption{Add gate computing data to be added to cell state in LSTM} 
+    \label{fig:lstm_add1}
+\end{figure}
+
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/lstm_output.png}  
+    \caption{Add gate computing output in LSTM} 
+    \label{fig:lstm_output}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/enc_dec.png}  
+    \caption{Simple Encoder-Decoder architecture for machine translation} 
+    \label{fig:enc_dec}
+\end{figure}
+
+
+\subsubsection{RNN}
+The neurons in the RNNs have recurrent self connections. \ie The output of the neurons are connected back to the inputs. Thus the output at time step $t_1$ is computed with taking output at time step $t_0$ as input. The recurrent connections are shown Fig.\ref{fig:rnn} This enables the RNNs to have an internal memory. RNNs are trained with the a modified version of back propagation called \textbf{Back Propagation Through Time(BPTT)}  \cite{werbos1990backpropagation}.
+
+RNNs in general are harder to train and this is particularity evident when the BPTT is done over a larger number of time steps. This is because the gradients simply converges to zero after a few time steps. This problem known as \textbf{vanishing gradients problem} is a well studied phenomenon \cite{bengio1994learning}.  
+
+To alleviate the vanishing gradients problem, a special architecture called \textbf{Long Short Term Memory(LSTM)} \cite{hochreiter1997long} is used. An LSTM cell is shown in \label{fig:lstm}.
+
+LSTM cells has separate internal memory vector and has three gates--forget gate, add gate, and output gate. To understand the Mathematical intuition behind these gates, let us consider a LSTM cell in a hidden state $h$ and internal cell memory vector $c_{t-1}$. At time $t$, the cell takes input $x_t$, previous output $h_{t-1}$ and update the cell memory to $c_{t}$, produces the output $h_{t}$. The forget computes a vector size $c$ between 0 and 1. This vector determines who information should be preserved and what should be forgotten based on the current input $x_t$ as shown in \ref{fig:lstm_forget}. This vector is later multiplied with the cell memory. If the vector is all zeros, multiplying makes all cell state to forget everything while all ones preserve everything. Then the add gate computes which parts in the cell states to be updates as shown in  \ref{fig:lstm_add} and the new data to be updated as shown in \ref{fig:lstm_add1}. Finally the output gate generates the output $h_t$ and does not modify the cell state as shown in \ref{fig:lstm_output}.
+\bibliographystyle{plain}
+
+
+\subsection{Related work}
+PBMT explanation. \cite{koehn2003statistical} 
+
+\subsection{Neural Machine Translation}
+Though usage of neural networks did not yield promising results in the early years, the recurrent neural networks started to achieve performance comparable to PBMT as in \cite{kalchbrenner2013recurrent} and \cite{hermann2013multilingual}. Most of the early architectures were simple encoder-decoder architectures. An simple working of encoder-decoder architecture for machine translation is shown in Fig.\ref{fig:enc_dec}. The architecture has an encoder that takes a sentence in source language and encodes it into a vector $S$ of fixed length. The decoder takes the embedding $S$ as input and generates the sentence in the target language. Some of the major drawbacks with the simple architecture is that
+\begin{enumerate}
+ \item The encoder has to encode all the information in the source sentence into fixed size embedding $S$. 
+ \item The decoder never sees the actual input sentence and has to rely completely on $S$ for generating target sentence. 
+ \item Having fixed size embedding vector makes the architecture less flexible. Smaller size means less information where as using larger vector means for smaller sentences we need zero padding and more computation time.
+\end{enumerate}
+
+
+\begin{figure}
+    \includegraphics[width=.99\linewidth]{img/context.png}  
+    \caption{Context for machine translation} 
+    \label{fig:context}
+\end{figure}
+
+The paper \cite{bahdanau2014neural} address this issue of having a fixed size embedding by introducing the idea of context \ref{fig:context}. The main proposal was to use
+\begin{enumerate}
+ \item Encoder outputs a hidden representation for each word in the source sentence $F_s$.
+ \item One context vector $C$ in the size of the input sentence that has values between 0 and 1.
+ \item Each element of the embedding $F_s$ is multiplied with one element in $C$.
+\end{enumerate}
+The whole embedding is made available to the decoder and $C$ describes which part of the embedding should be focused to generate the current word based on the previous word.
+
+Encoder RNN, at each input step t, generates hidden state, $h_t = f(x_t, h_{t-1})$.
 
 \bibliography{literature}
 \end{document}

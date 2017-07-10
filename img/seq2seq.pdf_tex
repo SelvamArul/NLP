@@ -1,0 +1,68 @@
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'seq2seq.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{555.99993286bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.83761577)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{seq2seq.pdf}}%
+    \put(0.02709083,0.06072755){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{A}}}%
+    \put(0.16395212,0.06072755){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{B}}}%
+    \put(0.29245759,0.06075565){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{C}}}%
+    \put(0.41745023,0.06072755){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{D}}}%
+    \put(0.54807743,0.06594057){\color[rgb]{0.16862745,0,0}\makebox(0,0)[lb]{\smash{--}}}%
+    \put(0.68006759,0.06596867){\color[rgb]{0.16862745,0,0}\makebox(0,0)[lb]{\smash{X}}}%
+    \put(0.80808121,0.07195451){\color[rgb]{0.16862745,0,0}\makebox(0,0)[lb]{\smash{Y}}}%
+    \put(0.9381323,0.06596867){\color[rgb]{0.16862745,0,0}\makebox(0,0)[lb]{\smash{Z}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{seq2seq.pdf}}%
+    \put(0.54918748,0.73493115){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{X}}}%
+    \put(0.67940718,0.73493115){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Y}}}%
+    \put(0.80539742,0.73493115){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Z}}}%
+    \put(0.93058677,0.73826134){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Q}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{seq2seq.pdf}}%
+  \end{picture}%
+\endgroup%
