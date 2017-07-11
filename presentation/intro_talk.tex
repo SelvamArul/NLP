@@ -74,14 +74,6 @@ Seminar: Natural Language Processing}
  \end{itemize}
 \end{frame}
 
-\begin{frame}{Motivation}
-\begin{itemize}
- \item<+-> Translation: The process of translating words or text from one language into another (OED).
- \item<+-> Machine Translation: Translation carried out by a computer (OED).
- \item<+-> Why do we need it?
- \item<+-> Do I need to convince that we need machine translation?
-\end{itemize}
-\end{frame}
 
 
 \begin{frame}{Machine Translation}
@@ -454,6 +446,15 @@ A feedforward neural network is used as the alignment model and is \textbf{joint
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Error Function and training details}
+ \begin{itemize}
+ \item<+-> Standard maximum-likelyhood:
+ $$\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $$
+ \item<+-> Optimizer-SGD.
+ \item<+-> Minibatch of 80 sentences. 
+ \item<+-> BLEU comparable to PBMT.
+ \end{itemize}
+\end{frame}
 
 \begin{section}{Seq2Seq Learning}
 \end{section}
@@ -539,6 +540,19 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
     \caption{ GNMT with residual connections.}
   \end{figure}
 \end{frame}
+
+
+\begin{frame}{Google NMT}
+ \textbf{Error function}
+ \begin{itemize}
+ \item<+-> Standard maximum-likelyhood:
+ $$\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $$
+ \item<+-> Refined error function aiming to maximize BLEU:
+ $$ \mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N \sum_{Y=\mathbb{Y}}^N log P_\Theta(Y^{*(i)} | X^{(i)}) r(Y, Y^{*(i)} ) $$
+ where $r(\textperiodcentered)$ is per-sentence score computed as an expectation over all $Y$ upto certain-length.
+ \end{itemize}
+\end{frame}
+
 
 \begin{frame}{Google NMT}
 \textbf{Google NMT properties}
