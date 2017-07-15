@@ -16,6 +16,7 @@
 \usepackage{xcolor}
 \usepackage[justification=centering]{caption}
 \usepackage{flexisym}
+\newcommand\TODO[1]{\textcolor{red}{#1}}
 \pgfplotsset{compat=1.9}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning,calc}
@@ -39,9 +40,11 @@
 
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
+\def\ie{\latinabbrev{i.e}}
+
+
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
 \def\doubleunderline#1{\underline{\underline{#1}}}
-\def\ie{\latinabbrev{i.e}}
 \renewcommand{\vec}[1]{\boldsymbol{#1}}
 \newcommand{\p}[1]{\left(#1\right)}
 \newcommand{\f}[2]{\frac{#1}{#2}}
@@ -98,10 +101,7 @@
 \newcommand{\vx}{\vec{x}}
 \newcommand{\vy}{\vec{y}}
 \newcommand{\vz}{\vec{z}}
-
-
 \newcommand*{\everymodeprime}{\ensuremath{\prime}}
-
 \begin{document}
 
 \title{Neural Machine Translation}
@@ -168,13 +168,14 @@ A layer has many number of neurons and many layers are stacked one on top of the
 Supervised learning is the problem of predicting an new output $y\everymodeprime$  for a new input $x\everymodeprime$, and set of training data that provides a set of input and output $\{x \mapsto y\}$. Most of the supervised learning problems can be formulated as either a classification or regression problem. Classification is the problem of predicting the label for a given  $x\everymodeprime$ among a set of given labels $\{Y\}$ while regression of predicting a continuous  valued output for a given input. The usual way of doing supervised learning is to extract features from the given data and train a model to perform classification or regression. 
 
 
-
 $$x \xrightarrow[\text{Feature extraction}]{ \mathbb{D}(x) } x\everymodeprime _{intermediate} \xrightarrow[\text{classifer/regressor}]{\mathbb{F}(x\everymodeprime | \theta)}   y$$
 
 The power of the DNNs lie in the fact that the models learns the features directly from the given training data and avoids hand engineered features. 
 $$ x \xrightarrow[ \text{hierachical}] { \mathbb{M}(x | \Theta) } y$$
+\bibliographystyle{plain}
 
 The DNNs with neurons in one layers being connected to all the neurons in the next layer are called Feed Forward Networks. The feed forward networks are harder to train since they have lots of parameters. To make a the DNNs learn useful representation for performing supervised learning, we need special types of connections between the neurons. Two of the most commonly used DNN architectures are Convolutional Neural Networks(CNN) and Recurrent Neural Networks(RNN). In the following section we will discuss these architectures in detail.
+
 
 \subsubsection{CNN}
 todo
@@ -235,7 +236,8 @@ RNNs in general are harder to train and this is particularity evident when the B
 To alleviate the vanishing gradients problem, a special architecture called \textbf{Long Short Term Memory(LSTM)} \cite{hochreiter1997long} is used. An LSTM cell is shown in \label{fig:lstm}.
 
 LSTM cells has separate internal memory vector and has three gates--forget gate, add gate, and output gate. To understand the Mathematical intuition behind these gates, let us consider a LSTM cell in a hidden state $h$ and internal cell memory vector $c_{t-1}$. At time $t$, the cell takes input $x_t$, previous output $h_{t-1}$ and update the cell memory to $c_{t}$, produces the output $h_{t}$. The forget computes a vector size $c$ between 0 and 1. This vector determines who information should be preserved and what should be forgotten based on the current input $x_t$ as shown in \ref{fig:lstm_forget}. This vector is later multiplied with the cell memory. If the vector is all zeros, multiplying makes all cell state to forget everything while all ones preserve everything. Then the add gate computes which parts in the cell states to be updates as shown in  \ref{fig:lstm_add} and the new data to be updated as shown in \ref{fig:lstm_add1}. Finally the output gate generates the output $h_t$ and does not modify the cell state as shown in \ref{fig:lstm_output}.
-\bibliographystyle{plain}
+
+
 
 
 \subsection{Related work}
@@ -253,13 +255,9 @@ Though usage of neural networks did not yield promising results in the early yea
 \begin{figure}
     \includegraphics[width=.99\linewidth]{img/context.png}  
     \caption{Context for machine translation} 
-    \label{fig:
-    
-    }
+    \label{fig:context}
 \end{figure}
 
-
-\subsubsection{Jointly learning to Align and Translate.}
 The paper \cite{bahdanau2014neural} address this issue of having a fixed size embedding by introducing the idea of context \ref{fig:context}. The main proposal was to use
 \begin{enumerate}
  \item Encoder outputs a hidden representation for each word in the source sentence $F_s$.
@@ -268,64 +266,9 @@ The paper \cite{bahdanau2014neural} address this issue of having a fixed size em
 \end{enumerate}
 The whole embedding is made available to the decoder and $C$ describes which part of the embedding should be focused to generate the current word based on the previous word.
 
-% Encoder RNN, at each input step t, generates hidden state, $$h_t = f(x_t, h_{t-1})$$.
-% The decoder is trained to predict the next work $y_t$ given the context vector $c$ and all previously predicted words $\{ y_1, \cdots, y_{t-1}\}$
-%  $$ p(y) = \prod^{T}_{t=1} p(y_t | \{ y_1, \cdots, y_{t-1}\} ,c ) $$
-% %  With RNNss, each conditional probability is modeled as,
-%  $$ p(y_t | \{ y_1, \cdots, y_{t-1}\}, c) = g(y_{t-1}, s_t, c) $$ where $s_t$ is the hidden state of the RNN.
-%  
-%   The context vector for a input sentence $i$, is computed as a weighted sum of hidden states of the encoder (also known as \textbf{annotations})
-%   $$ c_i = \sum_{j=1}^{T_{x}} \alpha_{ij} h_j$$
-%   $$ \alpha_{ij} = \frac{ exp(e_{ij})}{ \sum_{k=1}^{T_x} exp (e_{ik})}$$
-% 
-% where,
-% $$ e_{ij} = a(s_{i-1}, h_j)  $$ is the alignment model that scores how well the inputs around the $j$ and the output at the position $i$ match.
-% 
-% A feedforward neural network is used as the alignment model and is \textbf{jointly trained} with all the NMT system as a whole. 
-% 
-% \begin{figure}
-%     \includegraphics[width=.99\linewidth]{img/contextres.png}  
-%     \caption{visualization of context} 
-%     \label{fig:contextres}
-% \end{figure}
-% 
-% A visualization of the context vector is shown in the Fig. \ref{fig:contextres}.
-% 
-% The \cite{bahdanau2014neural} paper also made use of Bi-directional RNNs. Like RNNs the bi-directional RNNs generate $h_t$ based on the future states. This is particularly useful in machine translation where the current word may also be influenced by next words. Bi-directional LSTM has two cell memory states instead on one on the vanilla LSTMs as shown in \ref{fig:birnn}.
-%  
-% \begin{figure}
-%     \includegraphics[width=.99\linewidth]{img/birnn.png}  
-%     \caption{Bi-directional LSTM} 
-%     \label{fig:birnn}
-% \end{figure}
-% 
-% 
-% \subsubsection{Seq2Seq Learning}
-
-% While it seems machine translation is unique problem involving to very different problem of understanding a source language sentence and then generating a target language, the paper \cite{sutskever2014sequence} treated the problem of machine translation just a special case of more generic sequence to sequence model where a multi layered LSTM network is trained to map an input sequence $X$ to an output sequence $Y$. This is applicable to many problems like voice recognition where sound signals are mapped to language works, hand gestures are mapped to written digits, etc. Machine translation is a special case as follows,
-% 
-% $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots, y_{t-1})$$
-% where $y$ is the target sentence, $x$ is the source sentence, and $v$ is the information contained in the LSTM cell memory.
-% This paper achieved the state-of-the-art without making any additional handling for machine translation. 
-% The core idea is use to a simple LSTM encoder-decoder architecture as shown in  \ref{fig:s2s} but a more powerful model as shown in  \ref{fig:s2sbig}
-
-
-%  \begin{figure}
-% 	\includegraphics[width=.49\linewidth]{img/seq2seq.pdf} 
-% % 	\caption{Seq2Seq model} 
-% 	\label{fig:s2s}
-% %     \end{figure}
-%     
-% 
-% %  \begin{figure}
-% 
-% 	\includegraphics[width=.49\linewidth]{img/seq2seq_deep.pdf} 
-% % 	\caption{Seq2Seq more powerful model} 
-% 	\label{fig:s2sbig}
-% %     \end{figure}
-
-    
+Encoder RNN, at each input step t, generates hidden state, $h_t = f(x_t, h_{t-1})$.
 \bibliography{literature}
+\end{document}
 
 
 
