@@ -258,6 +258,7 @@ Though usage of neural networks did not yield promising results in the early yea
     \label{fig:context}
 \end{figure}
 
+\subsubsection{Jointly learning to align and translate}
 The paper \cite{bahdanau2014neural} address this issue of having a fixed size embedding by introducing the idea of context \ref{fig:context}. The main proposal was to use
 \begin{enumerate}
  \item Encoder outputs a hidden representation for each word in the source sentence $F_s$.
@@ -304,6 +305,17 @@ This paper also made use of the bi-directional LSTM in the layers of the Encoder
 
 
 The whole model is trained with standard maximum-likelihood error minimization $\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $ with stochastic gradient descent(SGD) on a mini-batch of 80 sentences. For the first time, the BLEU score was comparable to phrase based machine translation system. But the fact that there are no individual pieces in the model was a great benefit and the research community started to consider neural systems as an viable alternative phrase based machine translation system.
+
+
+\subsubsection{Sequence to Sequence models.}
+With in an year, more deep and powerful models were computationally possible. Taking the availability of the computational power to advantage a new framework for learning sequence to sequence mapping were proposed. A sequence to sequence model formulated as 
+$$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots, y_{t-1})$$
+where $v$ is the internal memory of the RNNs. With more powerful RNNs, this model can be used to learn a variety of tasks like speech recognition, handwritten digits recognition, machine translation, etc as shown in the paper \cite{sutskever2014sequence}
+
+
+
+
+
 
 
 \bibliography{literature}
