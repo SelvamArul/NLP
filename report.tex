@@ -313,10 +313,29 @@ $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots
 where $v$ is the internal memory of the RNNs. With more powerful RNNs, this model can be used to learn a variety of tasks like speech recognition, handwritten digits recognition, machine translation, etc as shown in the paper \cite{sutskever2014sequence}
 
 
+ \begin{figure}
+ \centering
+      \includegraphics[width=.49\linewidth]{img/seq2seq.pdf} 
+	\caption{ Seq2Seq model}
+	\label{fig:seq}
+\end{figure}
 
 
+ \begin{figure}
+  \centering
+      \includegraphics[width=.49\linewidth]{img/seq2seq_deep.pdf} 
+	\caption{A more powerfuls Seq2Seq model}
+	\label{fig:seqdeep}
+\end{figure}
 
 
+ \begin{figure}
+  \centering
+      \includegraphics[width=.9\linewidth]{img/wordvec.png} 
+	\caption{Two-dimensional PCA projection of the 1000-dimensional word embedding.}
+	\label{fig:wordvec}
+\end{figure}
+A simple sequence to sequence model is shown in  Fig.\label{fig:seqdeep}. Just by making the model more deeper, without any special treatment for machine translation, the paper achieved state-of-the art results. The model as trained on WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words using 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language. Every out-of-vocabulary word was replaced with a special \textbf{UNK} token. The network has 4 LSTM layers with 1000 LSTM cells in each layer. The paper used 1000 dimensional word embedding to represent the words as vector following the word2vec paper \cite{mikolov2013distributed}. word2vec formulated the problem of learning word embedding as an energy maximization problem using a simple neural network with just one hidden layer. The energy maximized is called Negative sampling. The resulting vector embedding is empirically shown to have arithmetic properties. \ie  $\,$France - Paris + Germany is roughly equal to Berlin as shown in Fig.\ref{fig:wordvec}. The paper an impressive BLEU score of 33.3 even without doing anything specific for machine translation.
 
 \bibliography{literature}
 \end{document}
