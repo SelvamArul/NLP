@@ -268,7 +268,7 @@ The whole embedding is made available to the decoder and $C$ describes which par
 
 Encoder RNN, at each input step t, generates hidden state, $h_t = f(x_t, h_{t-1})$.
 
-Unlike in the previous models where only the last hidden state is made avaiablel to the decoder, this paper provided all the hidden state and also a centext vector that has a weight for each of the hidden vector. The context vector helps the decoder to focus on a part of the sentence. $c = q(\{h_1,\cdots,h_{T_x}\})$. 
+Unlike in the previous models where only the last hidden state is made available to the decoder, this paper provided all the hidden state and also a context vector that has a weight for each of the hidden vector. The context vector helps the decoder to focus on a part of the sentence. $c = q(\{h_1,\cdots,h_{T_x}\})$. 
 
 The decoder is trained to predict the next work $y_t$ given the context vector $c$ and all previously predicted words $\{ y_1, \cdots, y_{t-1}\}$
  $$ p(y) = \prod^{T}_{t=1} p(y_t | \{ y_1, \cdots, y_{t-1}\} ,c ) $$
@@ -283,7 +283,7 @@ $$ e_{ij} = a(s_{i-1}, h_j)  $$ is the alignment model that scores how well the 
 
 A feedforward neural network is used as the alignment model and is \textbf{jointly trained} with all the NMT system as a whole.
 
- \begin{figure}[h]
+ \begin{figure}
     \includegraphics[height=8cm]{img/contextres.png}  
     \caption{Visualization of the context in action}
     \label{fig:contextvis}
@@ -291,6 +291,18 @@ A feedforward neural network is used as the alignment model and is \textbf{joint
   
 
 The functionality of the context vector is visualized in the Fig. \ref{fig:contextvis}. For example, the French language has the words  \textquotedblleft European Economic Area\textquotedblright exists in the reverse order as \textquotedblleft zone \'{e}conomique europ\'{e}enne\textquotedblright. The context learns to focus on the correct order for the decoder. 
+
+
+
+\begin{figure}
+    \includegraphics[width=0.9\linewidth]{img/birnn.png}  
+    \caption{Bi-directional Encoder}
+    \label{fig:birnn}
+\end{figure}
+
+This paper also made use of the bi-directional LSTM in the layers of the Encoder. Just like an LSTM that has an internal memory to comprehend the past states, the LSTM also comprehends the words that comes next in the sentence. It has two internal state---one for past states and one for the future state. A bi-directional LSTM is shown in \ref{fig:birnn}
+
+
 
 
 
