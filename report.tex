@@ -300,10 +300,10 @@ The functionality of the context vector is visualized in the Fig. \ref{fig:conte
     \label{fig:birnn}
 \end{figure}
 
-This paper also made use of the bi-directional LSTM in the layers of the Encoder. Just like an LSTM that has an internal memory to comprehend the past states, the LSTM also comprehends the words that comes next in the sentence. It has two internal state---one for past states and one for the future state. A bi-directional LSTM is shown in \ref{fig:birnn}
+This paper also made use of the bi-directional LSTM in the layers of the Encoder. Just like an LSTM that has an internal memory to comprehend the past states, the LSTM also comprehends the words that comes next in the sentence. It has two internal state---one for past states and one for the future state. A bi-directional LSTM is shown in \ref{fig:birnn}.
 
 
-
+The whole model is trained with standard maximum-likelihood error minimization $\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $ with stochastic gradient descent(SGD) on a mini-batch of 80 sentences. For the first time, the BLEU score was comparable to phrase based machine translation system. But the fact that there are no individual pieces in the model was a great benefit and the research community started to consider neural systems as an viable alternative phrase based machine translation system.
 
 
 \bibliography{literature}
