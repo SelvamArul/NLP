@@ -292,7 +292,7 @@ Reference 2: There is a cat on the mat.\\
 
 \textbf{ \textcolor{red}{N-gram Precision : 7 and BLEU : 1}}
 
-This result is very misleading. This modified BLEU score is often used.
+This result is very misleading. Thus the following modified BLEU score is often used.
  \begin{table}[h]
     \centering
     \begin{tabular}{|c|c|}
@@ -316,9 +316,37 @@ This result is very misleading. This modified BLEU score is often used.
 N-grams with different Ns are used but 4 is most common metric.
 
 \subsection{Phrase based Machine Translation(PBMT)}
- \cite{koehn2003statistical} 
+
+Traditionally there exists two types of machine translation systems:
+\begin{itemize}
+ \item \textbf{The Rule-based Approach}
+The source language text is analyzed using parsers and/or
+morphological tools and transformed into intermediary representation. This
+representation is used to generate target sentence. The rules are written by
+human experts. As a large number of rules is required to capture the phenomena of
+natural language, this is a time consuming process. As the set of rules grows over
+time, it gets more and more complicated to extend it and ensure consistency.
+\item \textbf{The Data-driven Approach}
+In the data-driven approach, bilingual and monolingual corpora are used as main
+knowledge source. In the statistical approach, MT is treated as a decision problem: given
+the source language sentence, we have to decide for the target language sentence
+that is the best translation. Then, Bayes rule and statistical decision theory are
+used to address this decision problem.
+\end{itemize}
 
 
+Phrase based Machine Translation following the paradigm of Data-driven Approach  Statistical Machine Translation achieved impressive result and were widely scalable models in the beginning of the millennium.  \cite{koehn2003statistical}. The model works at the level of phrases instead of words and had a lot of individual components but the core idea is learning statistical patterns in training data.
+
+Some of the major components used in the PBMT were
+\begin{itemize}
+ 
+ \item  Sentence alignment: Gale and Church Algorithm based on Dynamic programming \cite{lewis1994sequential}.
+ \item  Word alignment: Expectation Maximization.
+ \item  Phrases generation: Heuristic based complex algorithms.
+ \item  Phrase lookup: Statistical matching.
+ \item  Beam search: For generating target sentence. Beam search is a generic algorithm that is used even in the latest NMT systems.
+\end{itemize}
+ Beam search in general is a heuristic search algorithm that explores a graph by expanding the most promising node in a limited set. In machine translation, beam search is used to generate a set of most likely sentence given a input sentence by retaining only the most promising translations. Number of sentence is kept constant.  
 \subsection{Neural Machine Translation(NMT)}
 Though usage of neural networks did not yield promising results in the early years, the recurrent neural networks started to achieve performance comparable to PBMT as in \cite{kalchbrenner2013recurrent} and \cite{hermann2013multilingual}. Most of the early architectures were simple encoder-decoder architectures. An simple working of encoder-decoder architecture for machine translation is shown in Fig.\ref{fig:enc_dec}. The architecture has an encoder that takes a sentence in source language and encodes it into a vector $S$ of fixed length. The decoder takes the embedding $S$ as input and generates the sentence in the target language. Some of the major drawbacks with the simple architecture is that
 \begin{enumerate}
