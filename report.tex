@@ -258,7 +258,7 @@ Though usage of neural networks did not yield promising results in the early yea
     \label{fig:context}
 \end{figure}
 
-\subsubsection{Jointly learning to align and translate}
+\subsubsection{Jointly learning to align and translate} \label{sec:JT}
 The paper \cite{bahdanau2014neural} address this issue of having a fixed size embedding by introducing the idea of context \ref{fig:context}. The main proposal was to use
 \begin{enumerate}
  \item Encoder outputs a hidden representation for each word in the source sentence $F_s$.
@@ -307,7 +307,7 @@ This paper also made use of the bi-directional LSTM in the layers of the Encoder
 The whole model is trained with standard maximum-likelihood error minimization $\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $ with stochastic gradient descent(SGD) on a mini-batch of 80 sentences. For the first time, the BLEU score was comparable to phrase based machine translation system. But the fact that there are no individual pieces in the model was a great benefit and the research community started to consider neural systems as an viable alternative phrase based machine translation system.
 
 
-\subsubsection{Sequence to Sequence models.}
+\subsubsection{Sequence to Sequence models.} \label{sec:seq}
 With in an year, more deep and powerful models were computationally possible. Taking the availability of the computational power to advantage a new framework for learning sequence to sequence mapping were proposed. A sequence to sequence model formulated as 
 $$ p(y_1, \cdots, y_T| x_1, \cdots, x_T) = \prod_{t=1}^{T} p(y_t| v, y_1, \cdots, y_{t-1})$$
 where $v$ is the internal memory of the RNNs. With more powerful RNNs, this model can be used to learn a variety of tasks like speech recognition, handwritten digits recognition, machine translation, etc as shown in the paper \cite{sutskever2014sequence}
@@ -335,7 +335,48 @@ where $v$ is the internal memory of the RNNs. With more powerful RNNs, this mode
 	\caption{Two-dimensional PCA projection of the 1000-dimensional word embedding.}
 	\label{fig:wordvec}
 \end{figure}
-A simple sequence to sequence model is shown in  Fig.\label{fig:seqdeep}. Just by making the model more deeper, without any special treatment for machine translation, the paper achieved state-of-the art results. The model as trained on WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words using 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language. Every out-of-vocabulary word was replaced with a special \textbf{UNK} token. The network has 4 LSTM layers with 1000 LSTM cells in each layer. The paper used 1000 dimensional word embedding to represent the words as vector following the word2vec paper \cite{mikolov2013distributed}. word2vec formulated the problem of learning word embedding as an energy maximization problem using a simple neural network with just one hidden layer. The energy maximized is called Negative sampling. The resulting vector embedding is empirically shown to have arithmetic properties. \ie  $\,$France - Paris + Germany is roughly equal to Berlin as shown in Fig.\ref{fig:wordvec}. The paper an impressive BLEU score of 33.3 even without doing anything specific for machine translation.
+A simple sequence to sequence model is shown in  Fig.\ref{fig:seqdeep}. Just by making the model more deeper, without any special treatment for machine translation, the paper achieved state-of-the art results. The model as trained on WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words using 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language. Every out-of-vocabulary word was replaced with a special \textbf{UNK} token. The network has 4 LSTM layers with 1000 LSTM cells in each layer. The paper used 1000 dimensional word embedding to represent the words as vector following the word2vec paper \cite{mikolov2013distributed}. word2vec formulated the problem of learning word embedding as an energy maximization problem using a simple neural network with just one hidden layer. The energy maximized is called Negative sampling. The resulting vector embedding is empirically shown to have arithmetic properties. \ie  $\,$France - Paris + Germany is roughly equal to Berlin as shown in Fig.\ref{fig:wordvec}. The paper an impressive BLEU score of 33.3 even without doing anything specific for machine translation.
+
+
+
+
+
+ \begin{figure}
+  \centering
+      \includegraphics[width=.9\linewidth]{img/gnmt_1.png} 
+	\caption{The core architecture of GNMT }
+	\label{fig:gnmt1}
+\end{figure}
+
+ \begin{figure}
+  \centering
+      \includegraphics[width=.9\linewidth]{img/residual.png} 
+	\caption{Residual connections}
+	\label{fig:residual}
+\end{figure}
+
+
+ \begin{figure}
+  \centering
+      \includegraphics[width=.9\linewidth]{img/residual_gnmt.png} 
+	\caption{GNMT with residual connections}
+	\label{fig:gnmtres}
+\end{figure}
+
+\subsubsection{Google Neural Machine System}
+Most likely Google runs the worlds biggest  \cite{WinNT} machine translation service supporting 103 languages(at the time of writing this article) serving about a 
+billion query every day. Google translate team published a detailed paper describing their neural machine translation system \cite{wu2016google}. In the following section we will discuss the key ideas described in the paper. This paper is very unique in the sense that it is much more than an academic paper. The paper explains most of the components of the system including a lot of engineering details and also has a lot of components that are inspired from other recent breakthroughs in machine translation and deep learning research in general. The basic architecture is heavily inspired by the jointly learning to align and translate \ref{sec:JT}  and \ref{sec:seq}. The core architecture is shown in Fig.\ref{fig:gnmt1}. It combines the idea of context with the a deeper sequence to sequence encoder-decoder model with bi-directional LSTM in the initial layers of the encoder. Both the encoder and decoder contains eight layer. It also made use of the Residual connections introduced in \cite{he2016deep}. Residual connection are helpful in alleviating the vanishing gradients problem in an interesting manner as shown in \ref{fig:residual}. In a DNN each layer can be interpreted as transforming the input $x$ to a new manifold by learning $F(x)$ but in a residual network only learn the change to be applied to the input ($x + F(x)$). There is always an identity skip connection between layers helping in the constant gradient flow which otherwise might vanish. The residual learning enables training very deep networks as shown in Fig.\ref{fig:gnmtres}.
+The author also tried to use a enhanced cost function. The usual cost function maximized by the training process is the maximum likelihood $$\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $$ but this does not directly correspond to the BLEU score. To improve the BLEU the authors proposed the following cost function. $$ \mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N \sum_{Y=\mathbb{Y}}^N log P_\Theta(Y^{*(i)} | X^{(i)}) r(Y, Y^{*(i)} ) $$
+ where $r(\textperiodcentered)$ is per-sentence score computed as an expectation over all $Y$ upto certain-length.
+
+
+
+
+
+
+
+
+
 
 \bibliography{literature}
 \end{document}
