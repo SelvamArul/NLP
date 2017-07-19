@@ -238,12 +238,88 @@ To alleviate the vanishing gradients problem, a special architecture called \tex
 LSTM cells has separate internal memory vector and has three gates--forget gate, add gate, and output gate. To understand the Mathematical intuition behind these gates, let us consider a LSTM cell in a hidden state $h$ and internal cell memory vector $c_{t-1}$. At time $t$, the cell takes input $x_t$, previous output $h_{t-1}$ and update the cell memory to $c_{t}$, produces the output $h_{t}$. The forget computes a vector size $c$ between 0 and 1. This vector determines who information should be preserved and what should be forgotten based on the current input $x_t$ as shown in \ref{fig:lstm_forget}. This vector is later multiplied with the cell memory. If the vector is all zeros, multiplying makes all cell state to forget everything while all ones preserve everything. Then the add gate computes which parts in the cell states to be updates as shown in  \ref{fig:lstm_add} and the new data to be updated as shown in \ref{fig:lstm_add1}. Finally the output gate generates the output $h_t$ and does not modify the cell state as shown in \ref{fig:lstm_output}.
 
 
+\subsection{Evaluation score}
+Translation is a hard  task to define an evaluation score to measure how well a model is performing due to inherent complexity of the task. The most widely used evaluation metric is called Bilingual Evaluation Understudy(BLEU)\cite{papineni2002bleu}. Depends on modified n-gram precision (or co-occurrence). Needs lots of target sentences for better results. Despite being the most widely used metric, many researchers have expressed concern about the effectiveness of the metric \cite{zhang2004interpreting}, \cite{callison2006re}, \cite{ananthakrishnan2007some}. Consider the following translation candidates 
+
+\begin{itemize}
+\item Candidate 1: It is a guide to action which ensures that the military always obey the commands the party.
+\item Candidate 2: It is to insure the troops forever hearing the activity guidebook that party direct.
+\end{itemize}
+
+to be evaluated against the set of three reference translations.
+\begin{itemize}
+\item Reference 1: It is a guide to action that ensures that the military will forever heed Party commands. 
+\item Reference 2: It is the guiding principle which guarantees the military forces always being under the command of the Party.
+\item Reference 3: It is the practical guide for the army always to heed directions of the party.
+\end{itemize}
 
 
-\subsection{Related work}
-PBMT explanation. \cite{koehn2003statistical} 
+The BLUEs core idea is to use  count the number of N-gram matches. The match could be position-independent. Reference could be matched multiple times. These steps are linguistically-motivated.
 
-\subsection{Neural Machine Translation}
+
+
+
+
+Candidate 1: \textcolor{red} {It is a guide to action which ensures that the military always} obey  \textcolor{red} {the commands of the party}.
+\\
+Reference 1: \textcolor{red} {It is a guide to action} that \textcolor{red} {ensures that the military} will forever heed \textcolor{red} {Party commands}. 
+\\
+Reference 2: It is the guiding principle \textcolor{red} {which} guarantees \textcolor{red} {the} military forces \textcolor{red} {always} being under \textcolor{red} {the} command \textcolor{red} {of} the Party.
+\\
+Reference 3: It is the practical guide for the army always to heed directions of the party.
+\\
+N-gram Precision : 17
+
+
+Candidate 2: \textcolor{red} {It is to} insure \textcolor{red} {the} troops \textcolor{red} {forever} hearing \textcolor{red} {the} activity guidebook \textcolor{red} {that party} direct. 
+\\
+Reference 1: \textcolor{red} {It is} a guide \textcolor{red} {to} action \textcolor{red} {that} ensures that \textcolor{red} {the} military will \textcolor{red} {forever} heed \textcolor{red} {Party} commands. 
+\\
+Reference 2: It is \textcolor{red} {the} guiding principle which guarantees the military forces always being under the command of the Party.
+\\
+Reference 3: It is the practical guide for the army always to heed directions of the party.
+\\
+N-gram Precision : 8
+
+
+Thus candidate 1 is better.
+\textbf{Issues with N-gram precision}
+
+
+Candidate: \textcolor{red} {the the the the the the the.} \\
+Reference 1: \textcolor{red} {The} cat is on the mat. \\
+Reference 2: There is a cat on the mat.\\
+
+\textbf{ \textcolor{red}{N-gram Precision : 7 and BLEU : 1}}
+
+This result is very misleading. This modified BLEU score is often used.
+ \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Algorithm}  & \textbf{Example}  \\ \hline
+        Count the max number of times       &       Ref 1: The cat is on the mat.  \\
+        a word occurs in any single reference &   Ref 2: There is a cat on the mat. \\
+        &“the” has max count 2         \\ % <===== note the empty cells in this line
+ \hline
+	Clip the total count of & Unigram count = 7 \\
+	each candidate word & Clipped unigram count = 2 \\
+	&Total no. of counts = 7 \\
+\hline
+	Modified N-gram & Modified-ngram precision: \\
+	Precision equal to & Clipped count = 2 \\
+	Clipped count/ & Total no. of counts =7\\
+	Total no. of candidate word & Modified-ngram precision = 2/7\\
+\hline	
+    \end{tabular}
+    \end{table}
+N-grams with different Ns are used but 4 is most common metric.
+
+\subsection{Phrase based Machine Translation(PBMT)}
+ \cite{koehn2003statistical} 
+
+
+\subsection{Neural Machine Translation(NMT)}
 Though usage of neural networks did not yield promising results in the early years, the recurrent neural networks started to achieve performance comparable to PBMT as in \cite{kalchbrenner2013recurrent} and \cite{hermann2013multilingual}. Most of the early architectures were simple encoder-decoder architectures. An simple working of encoder-decoder architecture for machine translation is shown in Fig.\ref{fig:enc_dec}. The architecture has an encoder that takes a sentence in source language and encodes it into a vector $S$ of fixed length. The decoder takes the embedding $S$ as input and generates the sentence in the target language. Some of the major drawbacks with the simple architecture is that
 \begin{enumerate}
  \item The encoder has to encode all the information in the source sentence into fixed size embedding $S$. 
