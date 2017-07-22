@@ -42,7 +42,8 @@
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 \def\ie{\latinabbrev{i.e}}
 
-
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
 \def\doubleunderline#1{\underline{\underline{#1}}}
 \renewcommand{\vec}[1]{\boldsymbol{#1}}
@@ -116,8 +117,9 @@
 
 
 \begin{abstract}
-Abstract
-
+Machine translation (MT) is the task of automatically translating a text from one natural
+language into another. Ever since the invention of modern computers, MT has been one of the applications that envisioned to be automated. In the recent years,the progress in MT has been tremendous. In today's mobile phone era, the need for MT systems is only growing and the demand has grown beyond just text translation. Live translation on video conferences is possible with the current MT systems.
+In this article, we discuss the latest improvements in the MT research and highlight the most important breakthroughs.
 \end{abstract}
 
 
@@ -168,10 +170,10 @@ A layer has many number of neurons and many layers are stacked one on top of the
 Supervised learning is the problem of predicting an new output $y\everymodeprime$  for a new input $x\everymodeprime$, and set of training data that provides a set of input and output $\{x \mapsto y\}$. Most of the supervised learning problems can be formulated as either a classification or regression problem. Classification is the problem of predicting the label for a given  $x\everymodeprime$ among a set of given labels $\{Y\}$ while regression of predicting a continuous  valued output for a given input. The usual way of doing supervised learning is to extract features from the given data and train a model to perform classification or regression. 
 
 
-$$x \xrightarrow[\text{Feature extraction}]{ \mathbb{D}(x) } x\everymodeprime _{intermediate} \xrightarrow[\text{classifer/regressor}]{\mathbb{F}(x\everymodeprime | \theta)}   y$$
+$$x \xrightarrow[\text{Feature extraction}]{ \mathbb{D}(x) } x\everymodeprime _{intermediate} \xrightarrow[\text{classifier/regressor}]{\mathbb{F}(x\everymodeprime | \theta)}   y$$
 
 The power of the DNNs lie in the fact that the models learns the features directly from the given training data and avoids hand engineered features. 
-$$ x \xrightarrow[ \text{hierachical}] { \mathbb{M}(x | \Theta) } y$$
+$$ x \xrightarrow[ \text{hierarchical}] { \mathbb{M}(x | \Theta) } y$$
 \bibliographystyle{plain}
 
 The DNNs with neurons in one layers being connected to all the neurons in the next layer are called Feed Forward Networks. The feed forward networks are harder to train since they have lots of parameters. To make a the DNNs learn useful representation for performing supervised learning, we need special types of connections between the neurons. Two of the most commonly used DNN architectures are Convolutional Neural Networks(CNN) and Recurrent Neural Networks(RNN). In the following section we will discuss these architectures in detail.
@@ -300,7 +302,7 @@ This result is very misleading. Thus the following modified BLEU score is often 
         \textbf{Algorithm}  & \textbf{Example}  \\ \hline
         Count the max number of times       &       Ref 1: The cat is on the mat.  \\
         a word occurs in any single reference &   Ref 2: There is a cat on the mat. \\
-        &“the” has max count 2         \\ % <===== note the empty cells in this line
+        &“the” has max count 2         \\ 
  \hline
 	Clip the total count of & Unigram count = 7 \\
 	each candidate word & Clipped unigram count = 2 \\
@@ -334,12 +336,18 @@ that is the best translation. Then, Bayes rule and statistical decision theory a
 used to address this decision problem.
 \end{itemize}
 
-For a given sentence in source language $f$, we need to find the sentence $e$ in target sentence by applying Bayes rule as,
+For a given sentence in source language $f^{I} = f_1\ldots f_i\ldots f_{I}  $, we need to find the sentence $e^{I} = e_1\ldots e_i\ldots e_{I}  $ in target sentence by applying Bayes rule to find the sentence that minimizes the expected loss
+
+$$ e^{I} =  \argmin_{I,e^{I}} \Bigg\{  \sum_{I^{'} }   Pr(e^{'i^'} | f^J) .L(e^I,e^{'i^'})  \Bigg\} $$ Here 
+$ L(e^I,e^{'i^'}) $ denotes loss function under construction.  It measures the loss (or errors) of a candidate translation $e^{I}$
+assuming the correct translation is $e^{'i^'} $. If the loss function is assumed to be 0-1 loss meaning zero if wrong and 1 if correct, then the Bayes rule can be simplified to,
 
 
-Phrase based Machine Translation following the paradigm of Data-driven Approach  Statistical Machine Translation achieved impressive result and were widely scalable models in the beginning of the millennium.  \cite{koehn2003statistical}. The model works at the level of phrases instead of words and had a lot of individual components but the core idea is learning statistical patterns in training data.
+$$ e^{I} =  \argmax_{I,e^{I}}  \Bigg\{  Pr(e^{'i^'} | f^J) \Bigg\} $$
 
-Some of the major components used in the PBMT were
+Phrase based Machine Translation the were widely scalable models in the beginning of the millennium \cite{koehn2003statistical}. The model works at the level of phrases instead of words and had a lot of individual components but the core idea is learning statistical patterns in training data.
+
+Some of the major components used in the PBMT were 
 \begin{itemize}
  
  \item  Sentence alignment: Gale and Church Algorithm based on Dynamic programming \cite{lewis1994sequential}.
@@ -441,7 +449,7 @@ where $v$ is the internal memory of the RNNs. With more powerful RNNs, this mode
 	\caption{Two-dimensional PCA projection of the 1000-dimensional word embedding.}
 	\label{fig:wordvec}
 \end{figure}
-A simple sequence to sequence model is shown in  Fig.\ref{fig:seqdeep}. Just by making the model more deeper, without any special treatment for machine translation, the paper achieved state-of-the art results. The model as trained on WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words using 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language. Every out-of-vocabulary word was replaced with a special \textbf{UNK} token. The network has 4 LSTM layers with 1000 LSTM cells in each layer. The paper used 1000 dimensional word embedding to represent the words as vector following the word2vec paper \cite{mikolov2013distributed}. word2vec formulated the problem of learning word embedding as an energy maximization problem using a simple neural network with just one hidden layer. The energy maximized is called Negative sampling. The resulting vector embedding is empirically shown to have arithmetic properties. \ie  $\,$France - Paris + Germany is roughly equal to Berlin as shown in Fig.\ref{fig:wordvec}. The paper an impressive BLEU score of 33.3 even without doing anything specific for machine translation.
+A simple sequence to sequence model is shown in  Fig.\ref{fig:seq}. Just by making the model more deeper, without any special treatment for machine translation, the paper achieved state-of-the art results. The model as trained on WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words using 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language. Every out-of-vocabulary word was replaced with a special \textbf{UNK} token. The network has 4 LSTM layers with 1000 LSTM cells in each layer. The paper used 1000 dimensional word embedding to represent the words as vector following the word2vec paper \cite{mikolov2013distributed}. word2vec formulated the problem of learning word embedding as an energy maximization problem using a simple neural network with just one hidden layer. The energy maximized is called Negative sampling. The resulting vector embedding is empirically shown to have arithmetic properties. \ie  $\,$France - Paris + Germany is roughly equal to Berlin as shown in Fig.\ref{fig:wordvec}. The paper an impressive BLEU score of 33.3 even without doing anything specific for machine translation.
 
 
 
@@ -478,13 +486,7 @@ The author also tried to use a enhanced cost function. The usual cost function m
  In terms of the training process, just one encoder and one decoder is used for all language pairs. The authors reported several nice properties of the joint language training. One highlight is that this enables zero-shot learning. The system is able to translate between the language pairs it never saw in the training data. Also the languages for which huge training data exists benefited from the joint training. The zero shot learning property is discussed in detail the paper \cite{johnson2016google}. To enable a single decoder to generate target sentence for all the languages, the input text is suffixed with additional tokes like  $<\_\_EN\_\_>, <\_\_FR\_\_>, <\_\_DE\_\_>, <\_\_ES\_\_>$ indicating the target language to be generated.
 
 
-
-
-
-
-
-
-
+A simple sequence to sequence model is shown in  Fig.\ref{fig:seq}. Just by making the model more deeper as in Fig.\ref{fig:seqdeep}, without any special treatment for machine translation, the paper achieved state-of-the art results. The model as trained on WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words using 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language. Every out-of-vocabulary word was replaced with a special \textbf{UNK} token. The network has 4 LSTM layers with 1000 LSTM cells in each layer. The paper used 1000 dimensional word embedding to represent the words as vector following the word2vec paper \cite{mikolov2013distributed}. word2vec formulated the problem of learning word embedding as an energy maximization problem using a simple neural network with just one hidden layer. The energy maximized is called Negative sampling. The resulting vector embedding is empirically shown to have arithmetic properties. \ie  $\,$France - Paris + Germany is roughly equal to Berlin as shown in Fig.\ref{fig:wordvec}. The paper an impressive BLEU score of 33.3 even without doing anything specific for machine translation.
 
 \bibliography{literature}
 \end{document}
