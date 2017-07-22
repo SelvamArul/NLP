@@ -41,7 +41,7 @@
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 \def\ie{\latinabbrev{i.e}}
-
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
@@ -407,7 +407,27 @@ A feedforward neural network is used as the alignment model and is \textbf{joint
 
 The functionality of the context vector is visualized in the Fig. \ref{fig:contextvis}. For example, the French language has the words  \textquotedblleft European Economic Area\textquotedblright exists in the reverse order as \textquotedblleft zone \'{e}conomique europ\'{e}enne\textquotedblright. The context learns to focus on the correct order for the decoder. 
 
+The idea of context used in the paper was adapted by the MT research community with the name of attention. Several attention mechanism were proposed \cite{luong2015effective}, \cite{cho2014learning}, \cite{gregor2015draw}.
+ The context proposed in label{sec:JT} to align hidden state $h_t$ with each source hidden state $\bar{h_s}$ 
+can be formulated a,
 
+\begin{equation}
+\begin{split}
+a_t(s) & = align(h_t,\bar{h_s}) \\
+ & = \frac{  exp(score(h_t,\bar{h_s}))  }{ \sum_{s'} exp(score(h_t,\bar{h_s'})) }
+\end{split}
+\end{equation}
+
+The new attention mechanisms proposed are,
+
+\begin{equation*}
+align(h_t,\bar{h_s}) = \begin{cases}
+ h_t^T\bar{h_s} &\text{dot}\\
+h_t^TW_a\bar{h_s} &\text{general} \\
+v_a^T tanh (W_a[h_t;\bar{h_s'}]) &\text{concat}
+\end{cases}
+\end{equation*}
+These mechanisms are shown do perform better in certain scenarios  but none of them is shown to be the best.
 
 \begin{figure}
     \includegraphics[width=0.9\linewidth]{img/birnn.png}  
@@ -452,9 +472,6 @@ where $v$ is the internal memory of the RNNs. With more powerful RNNs, this mode
 A simple sequence to sequence model is shown in  Fig.\ref{fig:seq}. Just by making the model more deeper, without any special treatment for machine translation, the paper achieved state-of-the art results. The model as trained on WMT English to French dataset with 12M sentences consisting of 348M French words and 304M English words using 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language. Every out-of-vocabulary word was replaced with a special \textbf{UNK} token. The network has 4 LSTM layers with 1000 LSTM cells in each layer. The paper used 1000 dimensional word embedding to represent the words as vector following the word2vec paper \cite{mikolov2013distributed}. word2vec formulated the problem of learning word embedding as an energy maximization problem using a simple neural network with just one hidden layer. The energy maximized is called Negative sampling. The resulting vector embedding is empirically shown to have arithmetic properties. \ie  $\,$France - Paris + Germany is roughly equal to Berlin as shown in Fig.\ref{fig:wordvec}. The paper an impressive BLEU score of 33.3 even without doing anything specific for machine translation.
 
 
-
-
-
  \begin{figure}
   \centering
       \includegraphics[width=.9\linewidth]{img/gnmt_1.png} 
@@ -478,7 +495,7 @@ A simple sequence to sequence model is shown in  Fig.\ref{fig:seq}. Just by maki
 \end{figure}
 
 \subsubsection{Google Neural Machine System}
-Most likely Google runs the worlds biggest  \cite{WinNT} machine translation service supporting 103 languages(at the time of writing this article) serving about a 
+Most likely Google runs the worlds biggest machine translation service supporting 103 languages(at the time of writing this article) serving about a 
 billion query every day. Google translate team published a detailed paper describing their neural machine translation system \cite{wu2016google}. In the following section we will discuss the key ideas described in the paper. This paper is very unique in the sense that it is much more than an academic paper. The paper explains most of the components of the system including a lot of engineering details and also has a lot of components that are inspired from other recent breakthroughs in machine translation and deep learning research in general. The basic architecture is heavily inspired by the jointly learning to align and translate \ref{sec:JT}  and \ref{sec:seq}. The core architecture is shown in Fig.\ref{fig:gnmt1}. It combines the idea of context with the a deeper sequence to sequence encoder-decoder model with bi-directional LSTM in the initial layers of the encoder. Both the encoder and decoder contains eight layer. It also made use of the Residual connections introduced in \cite{he2016deep}. Residual connection are helpful in alleviating the vanishing gradients problem in an interesting manner as shown in \ref{fig:residual}. In a DNN each layer can be interpreted as transforming the input $x$ to a new manifold by learning $F(x)$ but in a residual network only learn the change to be applied to the input ($x + F(x)$). There is always an identity skip connection between layers helping in the constant gradient flow which otherwise might vanish. The residual learning enables training very deep networks as shown in Fig.\ref{fig:gnmtres}.
 The author also tried to use a enhanced cost function. The usual cost function maximized by the training process is the maximum likelihood $$\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $$ but this does not directly correspond to the BLEU score. To improve the BLEU the authors proposed the following cost function. $$ \mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N \sum_{Y=\mathbb{Y}}^N log P_\Theta(Y^{*(i)} | X^{(i)}) r(Y, Y^{*(i)} ) $$
  where $r(\textperiodcentered)$ is per-sentence score computed as an expectation over all $Y$ up to certain-length.
