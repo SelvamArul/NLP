@@ -39,6 +39,7 @@ era,  the need for MT systems is only  growing and  the demand  has grown beyond
 just text  translation.  Live translation on video conferences  is possible with
 the current MT systems. In this article, we discuss the  latest improvements  in
 the MT research and highlight the most important breakthroughs.
+
 \end{abstract}
 
 
@@ -68,7 +69,7 @@ section, we will briefly summarize the basics of deep learning.
 
 The  basic  building block of a  Multilayer network, or  in more technical  term
 Multilayer  perceptron  (MLP)  is a  perceptron.  The  preceptron  \ref{fig:ann}
-closely resembles a neuron in a human brain \ref{fig:neuron}. A preceptron takes
+closely resembles a neuron in a human brain. A preceptron takes
 a set of input  values,  computes a weighted sum of  the  inputs, and outputs  a
 scalar value of a after applying an activation function (mostly non-linear). The
 weights for  computing  the  weighted  sum and  the threshold  in the activation
@@ -92,12 +93,6 @@ other to form a MLP. An  MLP  with very  many layers is  called  as Deep  Neural
 Network(DNN). In the following section we will discuss  the properties  of  DNNs
 and how they are useful in the context of supervised machine learning.
 
-
-\begin{figure}
-  \includegraphics[width=.99\linewidth]{img/bioneuron.jpg}
-  \caption{A biological neuron.}
-  \label{fig:neuron}
-\end{figure}
 
 \begin{figure}
   \includegraphics[width=.99\linewidth]{img/artificial.jpg}
@@ -743,6 +738,26 @@ an impressive  BLEU  score  of  33.3 even without  doing  anything  specific for
 machine translation.
 
 
+
+
+One another interesting aspect of the GNMT is the use of Quantizable Model and Quantized Inference. Since GNMT has to serve a huge volume of users in the production, the service is very computationally intensive making hard for low latency translation difficult. Quantized Inference is the process of using low precession arithmetic operations during the inference. The idea of using low precession arithmetic got inference has been tried since the early days of neural networks. In the recent years, the authors in \cite{wu2016quantized} successfully demonstrated that a CNN training can be sped up by a factor of 4-6 with minimal loss of accuracy in the classification task. More interestingly \cite{li2016ternary} showed that weights of the neural networks can be quantized to just three states, -1,0,1. But most of these success are mostly restricted to CNNs. In the paper GNMT team did the same of RNNs. To achieve this, the model were constrained during training time. The nature of LSTMs remembering state across multiple time steps posts additional challenges in quantizing RNNs. he forward computation of an LSTM stack with residual connections is modified to the following: 
+
+
+  
+\begin{equation}
+\begin{split}
+c^{'i}_t,m^i_t    & = LSTM_i(c^{i}_{t-1},m^i_{t-1}, x^{i-1}_t; W^i ) \\
+c^{i}_t		  & =  max(-\delta, min(\delta,c^{'i}_t )) \\
+x^{'i}_t	  & = m^{i}_t + x^{i-1}_t \\
+x^{i}_t		  & =  max(-\delta, min(\delta,x^{'i}_t )) \\
+c^{'i}_t,m^i_t    & = LSTM_{i+1}(c^{i+1}_{t-1},m^{i+1}_{t-1}, x^{i}_t; W^{i+1} ) \\
+c^{i+1}_t		  & =  max(-\delta, min(\delta,c^{'i+1}_t ))
+\end{split}
+\end{equation}
+
+
+
+
 \subsection{A Convolutional Encoder Model for NMT}
 % TODO Why CNN?
 % TODO Conv Encoder
@@ -758,6 +773,8 @@ machine translation.
 
 \section{Conclusion}
 % TODO Conclusion
+
+
 
 
 \bibliographystyle{plain}
