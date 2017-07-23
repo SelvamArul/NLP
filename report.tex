@@ -705,7 +705,7 @@ $$\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $$ but
 this does not directly correspond to  the BLEU score. To improve  the  BLEU  the
 authors  proposed  the  following cost  function.  $$ \mathbb{O}_{ML}(\Theta)  =
 \sum_{i=1}^N  \sum_{Y=\mathbb{Y}}^N   log  P_\Theta(Y^{*(i)}   |  X^{(i)})  r(Y,
-Y^{*(i)} ) $$ where  $r(\textperiodcentered)$ is per-sentence score  computed as
+Y^{*(i)} ) $$ where  $r(\cdot)$ is per-sentence score  computed as
 an expectation over all $Y$ up to certain-length.
 
 In terms of the training process, just one encoder  and one decoder  is used for
@@ -737,44 +737,195 @@ Germany is roughly equal to Berlin as shown in Fig. \ref{fig:wordvec}. The paper
 an impressive  BLEU  score  of  33.3 even without  doing  anything  specific for
 machine translation.
 
+One another interesting aspect  of the GNMT is the use of Quantizable  Model and
+Quantized  Inference.  Since  GNMT  has to serve a huge volume  of users  in the
+production, the  service is very computationally intensive making  hard  for low
+latency translation difficult. Quantized Inference  is the process  of using low
+precession arithmetic  operations during the  inference.  The idea of  using low
+precession arithmetic  got inference has been  tried  since  the  early days  of
+neural networks.  In the  recent  years, the authors  in  \cite{wu2016quantized}
+successfully demonstrated that a CNN training can be sped up by a factor of  4-6
+with  minimal  loss of  accuracy in the classification  task. More interestingly
+\cite{li2016ternary} showed that weights of the neural networks can be quantized
+to just three states, -1,0,1. But most of these success are mostly restricted to
+CNNs.  In the paper GNMT team did  the same  of RNNs. To achieve this, the model
+were constrained  during training time. The nature of  LSTMs  remembering  state
+across multiple time  steps posts additional challenges  in  quantizing RNNs. he
+forward  computation of  an LSTM stack with residual connections is modified  to
+the following:
 
 
-
-One another interesting aspect of the GNMT is the use of Quantizable Model and Quantized Inference. Since GNMT has to serve a huge volume of users in the production, the service is very computationally intensive making hard for low latency translation difficult. Quantized Inference is the process of using low precession arithmetic operations during the inference. The idea of using low precession arithmetic got inference has been tried since the early days of neural networks. In the recent years, the authors in \cite{wu2016quantized} successfully demonstrated that a CNN training can be sped up by a factor of 4-6 with minimal loss of accuracy in the classification task. More interestingly \cite{li2016ternary} showed that weights of the neural networks can be quantized to just three states, -1,0,1. But most of these success are mostly restricted to CNNs. In the paper GNMT team did the same of RNNs. To achieve this, the model were constrained during training time. The nature of LSTMs remembering state across multiple time steps posts additional challenges in quantizing RNNs. he forward computation of an LSTM stack with residual connections is modified to the following: 
-
-
-  
 \begin{equation}
 \begin{split}
-c^{'i}_t,m^i_t    & = LSTM_i(c^{i}_{t-1},m^i_{t-1}, x^{i-1}_t; W^i ) \\
-c^{i}_t		  & =  max(-\delta, min(\delta,c^{'i}_t )) \\
-x^{'i}_t	  & = m^{i}_t + x^{i-1}_t \\
-x^{i}_t		  & =  max(-\delta, min(\delta,x^{'i}_t )) \\
-c^{'i}_t,m^i_t    & = LSTM_{i+1}(c^{i+1}_{t-1},m^{i+1}_{t-1}, x^{i}_t; W^{i+1} ) \\
-c^{i+1}_t		  & =  max(-\delta, min(\delta,c^{'i+1}_t ))
+c^{'i}_t,m^i_t & = LSTM_i(c^{i}_{t-1},m^i_{t-1}, x^{i-1}_t; W^i ) \\
+c^{i}_t & =  max(-\delta, min(\delta,c^{'i}_t )) \\
+x^{'i}_t & = m^{i}_t + x^{i-1}_t \\
+x^{i}_t	& =  max(-\delta, min(\delta,x^{'i}_t )) \\
+c^{'i}_t,m^i_t & = LSTM_{i+1}(c^{i+1}_{t-1},m^{i+1}_{t-1}, x^{i}_t; W^{i+1} ) \\
+c^{i+1}_t & =  max(-\delta, min(\delta,c^{'i+1}_t ))
 \end{split}
 \end{equation}
 
 
-
-
 \subsection{A Convolutional Encoder Model for NMT}
-% TODO Why CNN?
-% TODO Conv Encoder
+
+Despite all the success that recurrent neural  netowrks  have achieved in neural
+machine translation, they have some shortcomings which makes them less appealing
+for such a task. Recurrent neural networks have an inherently serial  structure,
+meaning that their  camputations  cannot  be  fully parallelized. This contrasts
+with  other types of networks, specifically covolutioanl neural  networks, which
+operate  over a  fixed-size input sequence enabling simultaneous computation  of
+all the features. Furthermore  recurrent  neural networks need  to traverse  the
+full distance of  the serial  path  between  two features  to reach from one  to
+another. This characteristics  leads  to  higher  difficulty  of  training these
+models. Once  again  this  is  not  the  case  for some  other  models  such  as
+convolutional neural networks in  which  a succession  of  convolutional  layers
+provide shroter  path  between features.  \cite{DBLP:journals/corr/GehringAGD16}
+Such  desired characteristics  of convolutional neural networks have resulted in
+the recent trend to exploit their power in neural machine  translations. In this
+and next sections we review a number of propsed techniques.
+
+\begin{figure}
+  \center
+  \includegraphics[width=0.9\textwidth]{img/CE}
+\end{figure}
+
+
+\begin{equation*}
+  p(y_{i+1} \vert y_1, ..., y_i, \textbf{x}) =
+  \text{softmax}(W_o h_{i + 1} + b_o)
+\end{equation*}
+
+
+BLEU score for various WMT tasks:
+\begin{center}
+  \begin{tabular}{lrrr}
+  \hline
+    Encoder & WMT'16 en-ro & WMT'15 en-de & WMT'14 en-fr \\
+  \hline
+    BiLSTM & 27.4 & 23.2 & 34.6 \\
+    Convolutional & 27.8 & 24.3 & 35.7 \\
+  \hline
+  \end{tabular}
+\end{center}
+
+
+\begin{align*}
+  e_i &= w_i + l_i \\
+  z_i &= \text{CNN-a}(e_i) \\
+  c_i &= \sum_{j = 1}^{T}{a_{ij}\text{CNN-c}(e)_j} \\
+  a_{ij} &= \frac{exp(d_i^T z_j)}{\sum_{t = 1}^{m}{exp(d_i^T z_t)}} \\
+  d_i &= W_d h_i + b_d + g_i
+\end{align*}
 
 
 \subsection{Convolutional Sequence to Sequence Learning}
-% TODO Conv Seq2seq
+
+\begin{figure}
+  \center
+  \includegraphics[width=\textwidth]{img/CS2S}
+\end{figure}
+
+\begin{align*}
+  c_i^l &= \sum_{j = 1}^{m}{a_{ij}^l(z_j^u + e_j)} \\
+  a_{ij}^l &= \frac{exp(d_i^l \cdot z_j^u)}
+  {\sum_{t = 1}^{m}{exp(d_i^l \cdot z_t^u)}} \\
+  d_i^l &= W_d^l h_i^l + b_d^l + g_i \\
+  \\
+  y_i^l &= h_i^l + c_i^l
+\end{align*}
+
+
+BLEU score for various WMT tasks:
+\begin{center}
+  \begin{tabular}{lrrr}
+  \hline
+    Model & WMT'16 en-ro & WMT'15 en-de & WMT'14 en-fr \\
+  \hline
+    GNMT & - & 24.61 & 39.92 \\
+    ConvS2S & 29.88 & 25.16 & 40.46 \\
+  \hline
+  \end{tabular}
+\end{center}
 
 
 \subsection{Depthwise Separable Convolutions for NMT}
-% TODO Depsep Conv
+
+
+Depthwise Separable Convolution consists of a depthwise convolution, i.e a
+spatial convolution performed independently over every channel of an input,
+followed by a pointwise convolution, i.e. a regular $1 \times 1$ convolution.
+\begin{align*}
+  Conv(W, y)_{i,j} &= \sum_{k,l,m}^{K,L,M}{W_{k,l,m} \cdot y_{i+k,j+l,m}}
+  \\
+  PointwiseConv(W, y)_{i,j} &= \sum_{m}^{M}{W_m \cdot y_{i,j,m}} \\
+  DepthwiseConv(W, y)_{i,j} &= \sum_{k,l}^{K,L}{W_{k,l} \cdot y_{i+k,j+l}} \\
+  SepConv(W_p, W_d, y)_{i,j} &=
+    PointwiseConv_{i,j}(W_p, DepthwiseConv_{i,j}(W_d, y))
+\end{align*}
+
+
+For a convolution with $c$ channels and filters and kernel size $k$,
+\begin{center}
+  \begin{tabular}{lr}
+  \hline
+    Convolution & Number of parameters\\
+  \hline
+    Conv & $k \cdot c^2$ \\
+    SepConv & $k \cdot c + c^2$ \\
+  \hline
+  \end{tabular}
+\end{center}
+
+
+\begin{align*}
+  Co&nvStep_{d,s}(W, x) = \\
+  &LN(SepConv_{d,s}(W, ReLU(x))) \\
+  LN&(x) = \frac{G}{\sigma(x)}(x - \mu(x)) + B
+\end{align*}
+
+
+\begin{figure}
+  \center
+  \includegraphics[width=0.7\textwidth]{img/SN}
+\end{figure}
+
+
+\begin{align*}
+  timing(t, 2d) &= sin(t/1000^{2d/depth}) \\
+  timing(t, 2d + 1) &= cos(t/1000^{2d/depth})
+\end{align*}
+
+
+\begin{align*}
+  attention(source, target) &= \\
+    Attend(source, &ConvStep_{4,1}((W_a1^{5 \times 1}, attention1(target))))
+\end{align*}
+
+
+\begin{align*}
+  &attention1(x) = ConvStep_{1,1}(W_a1^{5 \times 1} \cdot x + timing) \\
+  &Attend(source, target) = \frac{1}{\sqrt{depth}} \cdot
+    softmax(target \cdot source^T) \cdot source
+\end{align*}
+
+
+BLEU score on newstest 2014 evaluation set:
+\begin{center}
+  \begin{tabular}{lr}
+  \hline
+    Model & newstest 14 \\
+  \hline
+    GNMT & 24.6 \\
+    ConvS2S & 25.1 \\
+    SliceNet & 26.1 \\
+  \hline
+  \end{tabular}
+\end{center}
 
 
 \section{Conclusion}
 % TODO Conclusion
-
-
 
 
 \bibliographystyle{plain}
