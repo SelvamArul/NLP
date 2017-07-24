@@ -1009,8 +1009,10 @@ depthwise separable convolution can be written as follows:
 
 
 Table \ref{tab:convpar} lists the number fo parameters for a regular convolution
-as well as a depthwise separable convolution with $c$ channels  and  filters and
-one-dimensional kernel of size $k$.
+as well as a depthwise separable  convolution with  $c$ channels and filters and
+one-dimensional kernel  of  size $k$. As it can be seen  for larger kernel sizes
+the number  of  parameters in  depthwise separable convolution  is significantly
+less than regular convolutions.
 
 
 \begin{table}
@@ -1028,9 +1030,18 @@ one-dimensional kernel of size $k$.
 \end{table}
 
 
+The SliceNet  model  introduced  in \cite{DBLP:journals/corr/KaiserGC17},  has a
+similar structure  to other encoder-decoder models. It  first embeds the  inputs
+and outputs by two independent networks  and concatenates them and the feeds the
+result  into  a  decoder. At  each  step,  the  decoder produces  a  new  output
+prediction given the  encoded inputs and the encoding of the previously produces
+outputs. Fig. \ref{fig:sn} illustrates the architecture of SliceNet model.
+
+
+
+
 \begin{align*}
-  Co&nvStep_{d,s}(W, x) = \\
-  &LN(SepConv_{d,s}(W, ReLU(x))) \\
+  Co&nvStep_{d,s}(W, x) = LN(SepConv_{d,s}(W, ReLU(x))) \\
   LN&(x) = \frac{G}{\sigma(x)}(x - \mu(x)) + B
 \end{align*}
 
@@ -1038,6 +1049,8 @@ one-dimensional kernel of size $k$.
 \begin{figure}
   \center
   \includegraphics[width=\textwidth]{img/SN}
+  \caption{The architecture of SliceNet}
+  \label{fig:sn}
 \end{figure}
 
 
@@ -1049,21 +1062,25 @@ one-dimensional kernel of size $k$.
 
 \begin{align*}
   attention(source, target) &= \\
-    Attend(source, &ConvStep_{4,1}((W_a1^{5 \times 1}, attention1(target))))
+  Attend(source, &ConvStep_{4,1}((W_a1^{5 \times 1}, attention1(target))))
 \end{align*}
 
 
 \begin{align*}
-  &attention1(x) = ConvStep_{1,1}(W_a1^{5 \times 1} \cdot x + timing) \\
-  &Attend(source, target) = \frac{1}{\sqrt{depth}} \cdot
+  attention1(x) &= ConvStep_{1,1}(W_a1^{5 \times 1} \cdot x + timing) \\
+  Attend(source, target) &= \frac{1}{\sqrt{depth}} \cdot
     softmax(target \cdot source^T) \cdot source
 \end{align*}
 
 
-BLEU score on newstest 2014 evaluation set:
+The experimental results presented in \cite{DBLP:journals/corr/KaiserGC17} shows
+that  SliceNet  improves  the  BLEU  score  in  comparison  to  both   GNMT  and
+convolutional sequence to sequence models. Table \ref{tab:snbleu} lists the BLEU
+scores for one dateset.
 
 
-\begin{center}
+\begin{table}
+  \center
   \begin{tabular}{lr}
   \hline
     Model & newstest 14 \\
@@ -1073,7 +1090,10 @@ BLEU score on newstest 2014 evaluation set:
     SliceNet & 26.1 \\
   \hline
   \end{tabular}
-\end{center}
+  \caption{Performance comparison of SliceNet with other models in terms of BLEU
+  score}
+  \label{tab:snbleu}
+\end{table}
 
 
 \bibliographystyle{plainnat}
