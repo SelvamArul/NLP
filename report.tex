@@ -319,30 +319,22 @@ used.
 
 \begin{table}[h]
   \centering
-  \begin{tabular}{|c|c|}
+  \begin{tabular}{ll}
     \hline
-
     \textbf{Algorithm}  & \textbf{Example}  \\
-
     \hline
-
     Count the max number of times & Ref 1: The cat is on the mat.  \\
     a word occurs in any single reference & Ref 2: There is a cat on the mat. \\
     & “the” has max count 2 \\
-
     \hline
-
     Clip the total count of & Unigram count = 7 \\
     each candidate word & Clipped unigram count = 2 \\
     &Total no. of counts = 7 \\
-
     \hline
-
     Modified N-gram & Modified-ngram precision: \\
     Precision equal to & Clipped count = 2 \\
     Clipped count/ & Total no. of counts =7 \\
     Total no. of candidate word & Modified-ngram precision = 2/7\\
-
     \hline
   \end{tabular}
   \caption{Translation evalution scores}
@@ -872,8 +864,9 @@ CNN-a:
 
 
 The experimental results show that this architecture's performance is comparable
-to  that of bi-directional recurrent neural networks  while  achieving two times
-speed up in generation of target translation.
+to that of bi-directional recurrent  neural networks while  achieving two  times
+speed up in generation of target translation. Table \ref{tab:convseqblue}  lists
+the BLEU score achieved by this model for a few datesets.
 
 
 \begin{table}
@@ -886,8 +879,9 @@ speed up in generation of target translation.
     Convolutional & 27.8 & 24.3 & 35.7 \\
   \hline
   \end{tabular}
-  \caption{Performance  comparison  of  convoluional  encoder  model  with a bi-
+  \caption{Performance  comparison of  convolutional  encoder  model  with a bi-
   directional neural network in terms of BLEU score}
+  \label{tab:convseqblue}
 \end{table}
 
 
@@ -911,10 +905,44 @@ CNN-c.
 
 \subsection{Convolutional Sequence to Sequence Learning}
 
+Based                 on                 \cite{DBLP:journals/corr/GehringAGD16},
+\citet{DBLP:journals/corr/GehringAGYD17}   further   developed   the   idea   of
+convolutional  encoders and  introduced  a  fully convolutional  encoder-decoder
+architecture. In this model  both  encoder  and decoder networks  share a simple
+convolution block structure  that computes  intermediate states based on a fixed
+number  of input elements.  Each block consists of a one-dimensional convolution
+followed by  a non-linearity. Once  again the relationship between distant words
+in the input sequence is captured by stacking multiple such blocks on top of one
+another, and non-linearities in the  blocks  allow the  network to  exploit this
+full   input   field,   or   to    focus   on   fewer   elements    if   needed.
+\citet{DBLP:journals/corr/GehringAGYD17}  proposes the use of gated linear units
+(GLU) as non-linearity.
+
+Each  convolution kernel  of size $k$ is  parameterized as  $W \in \R^{2d \times
+kd}$, $b_w \in \R^{2d}$  and takes as input $X \in  \R^{k \times d}$  which is a
+concatenation of  $k$ input elements embedded in $d$ dimensions and maps them to
+a single element $Y = [A B] \in \R^{2d}$. Then applying a gated linear unit non-
+linearity $v([A B]) = A  \otimes \sigma(B)$ where $A, B \in  \R^d$ and $\otimes$
+is point-wise  multiplicaiton, results in a single output element  of  size $d$.
+Subsequent  layers  operate  in the  same manner  over  $k$ such  elements  from
+previous layer. Fig.  \ref{fig:convseq2seq} illustrates the architecture  of the
+model.
+
+
 \begin{figure}
   \center
   \includegraphics[width=0.6\textwidth]{img/CS2S}
+  \caption{Architecture of convolutional sequence to sequence learning.}
+  \label{fig:convseq2seq}
 \end{figure}
+
+
+Another  introduced  improvement over  previous model is multi-step attention in
+which a set of different conditional inputs are calculated for each layer of the
+decoder. To compute the attention,  the current  hidden  state $h^l_i$ of $l$-th
+layer of decoder  is combined with an  embedding of the previous target  element
+$g_i$. Once  the conditional input $c_i^l$ has been computed, it is simply added
+to the output of the corresponding layer $h^l_i$.
 
 
 \begin{align*}
@@ -927,10 +955,14 @@ CNN-c.
 \end{align*}
 
 
-BLEU score for various WMT tasks:
+Experimental results show that this translation model achieves similar or higher
+BLEU scores  as that of GNMT while bringing almost an order of magnitude seep up
+in translation generation. Table \ref{tab:convseq2seqbleu} lists the  BLEU score
+achieved by this model for a few datesets.
 
 
-\begin{center}
+\begin{table}
+  \center
   \begin{tabular}{lrrr}
   \hline
     Model & WMT'16 en-ro & WMT'15 en-de & WMT'14 en-fr \\
@@ -939,20 +971,36 @@ BLEU score for various WMT tasks:
     ConvS2S & 29.88 & 25.16 & 40.46 \\
   \hline
   \end{tabular}
-\end{center}
+  \caption{Performance  comparison of convolutional  sequence to  sequence model
+  with GNMT in terms of BLEU score}
+  \label{tab:convseq2seqbleu}
+\end{table}
 
 
 \subsection{Depthwise Separable Convolutions for NMT}
 
+Another     convolution-based      translation      model     is     due      to
+\citet{DBLP:journals/corr/KaiserGC17}. Even though convolutions unlike recurrent
+neural networks can provide an efficient non-local referencing across time, they
+still  suffer   from  computational   complexity  and   large  parameter  count.
+\cite{DBLP:journals/corr/KaiserGC17} Addresses this issue by introducing a model
+based upon  so-called  depthwise  separable  convolutions.  Depthwise  Separable
+Convolution  consists of a depthwise convolution, i.e an operator which performs
+a spatial convolution independently over each  channel of the input, followed by
+a pointwise convolution, i.e. a regular $1 \times 1$ convolution.
 
-Depthwise  Separable Convolution consists of  a  depthwise  convolution,  i.e  a
-spatial convolution performed  independently  over  every channel  of  an input,
-followed by a pointwise convolution, i.e. a regular $1 \times 1$ convolution.
+The rationale behind this definition  is  the  expermentally-verified assumption
+that the  2D and 3D inputs that convolutions operate on will feature both fairly
+independent    channels    and    highly    correlated     spatial     locations
+\cite{DBLP:journals/corr/KaiserGC17}.  As  a  result one  can  simplify  regular
+convolution's  feature  learning over  a joint "space-cross-channels realm" into
+two  simpler  steps,  i.e.  a  spatial  feature  learning  step,  and a  channel
+combination  step, while  reducing  the  number  of  parameters.  More  formally
+depthwise separable convolution can be written as follows:
 
 
 \begin{align*}
-  Conv(W, y)_{i,j} &= \sum_{k,l,m}^{K,L,M}{W_{k,l,m} \cdot y_{i+k,j+l,m}}
-  \\
+  Conv(W, y)_{i,j} &= \sum_{k,l,m}^{K,L,M}{W_{k,l,m} \cdot y_{i+k,j+l,m}} \\
   PointwiseConv(W, y)_{i,j} &= \sum_{m}^{M}{W_m \cdot y_{i,j,m}} \\
   DepthwiseConv(W, y)_{i,j} &= \sum_{k,l}^{K,L}{W_{k,l} \cdot y_{i+k,j+l}} \\
   SepConv(W_p, W_d, y)_{i,j} &=
@@ -960,10 +1008,13 @@ followed by a pointwise convolution, i.e. a regular $1 \times 1$ convolution.
 \end{align*}
 
 
-For a convolution with $c$ channels and filters and kernel size $k$,
+Table \ref{tab:convpar} lists the number fo parameters for a regular convolution
+as well as a depthwise separable convolution with $c$ channels  and  filters and
+one-dimensional kernel of size $k$.
 
 
-\begin{center}
+\begin{table}
+  \center
   \begin{tabular}{lr}
   \hline
     Convolution & Number of parameters\\
@@ -972,7 +1023,9 @@ For a convolution with $c$ channels and filters and kernel size $k$,
     SepConv & $k \cdot c + c^2$ \\
   \hline
   \end{tabular}
-\end{center}
+  \caption{Number of parameters in convolution operations}
+  \label{tab:convpar}
+\end{table}
 
 
 \begin{align*}
