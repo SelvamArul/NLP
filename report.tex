@@ -135,8 +135,8 @@ from the given data and train a model to perform classification or regression.
 \end{equation*}
 
 
-The  power of the  DNNs lie in  the fact  that the  models learns  the  features
-directly from the given training data and avoids hand  engineered features.
+The  power of  the DNNs  lies in  the  fact that  the models learns the features
+directly from the given training data and avoids hand engineered features.
 
 
 \begin{equation*}
@@ -154,9 +154,18 @@ Networks(RNN). In the following section  we  will discuss these architectures in
 detail.
 
 
-\subsubsection{CNN}
-% TODO: CNN
-The Convolutional NN are shown in Fig.\ref{fig:cnn}
+\subsubsection{Convolutional Neural Networks}
+
+Convolutional Neural netowrks  are  a class  of  feed-forward  networks in which
+hidden  layers  are   either  convolutional,   pooling  for  fully-connected.  A
+convolutional layer applies a convolution operation to the input, and passes the
+result to  the next  layer. A pooling layer combines the outputs of  a number of
+neurons from  previous  layer  into  a single value.  The  most commont  pooling
+operations are  max-pooling which selects the  maximum value from its  receptive
+field  and  average-pooling which  calculates the  average  of values  from  its
+receptive field.  A fully-connected layer  connects every neuron in one layer to
+every   neuron  to  another   layer,   in   a  similar   way   as   perceptrons.
+Fig.\ref{fig:cnn} depicts a CNN.
 
 
 \begin{figure}
@@ -208,7 +217,7 @@ The Convolutional NN are shown in Fig.\ref{fig:cnn}
 \end{figure}
 
 
-\subsubsection{RNN}
+\subsubsection{Recurrent Neural Networks}
 
 The neurons in the RNNs have recurrent  self connections. i.e. the output of the
 neurons are  connected back to the inputs. Thus the output at time step $t_1$ is
@@ -585,7 +594,8 @@ benefit and the  research  community started to  consider  neural systems as  an
 viable alternative phrase based machine translation system.
 
 
-\subsection{Sequence  to Sequence models.}
+\subsection{Sequence  to Sequence models}
+
 \label{sec:seq}  With  in  an  year,  more   deep   and   powerful  models  were
 computationally possible. Taking the availability of the computational power  to
 advantage  a  new  framework  for  learning  sequence  to sequence  learing was
