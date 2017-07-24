@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[affil-it]{authblk}
 \usepackage[justification=centering]{caption}
+\usepackage[numbers]{natbib}
 \usepackage{amssymb}
 \usepackage{color}
 \usepackage{mathtools}
@@ -784,11 +785,38 @@ Such  desired characteristics  of convolutional neural networks have resulted in
 the recent trend to exploit their power in neural machine  translations. In this
 and next sections we review a number of propsed techniques.
 
+
 \begin{figure}
   \center
   \includegraphics[width=0.5\textwidth]{img/CE}
+  \caption{The architecture of convolutional encoder model}
+  \label{fig:convenc}
 \end{figure}
 
+
+\citet{DBLP:journals/corr/GehringAGD16}   proposes   an   encoder-decoder  model
+similar to that of \cite{bahdanau2014neural} in which the encoder is replaced by
+a convolutional neural network. In this  model, as in \cite{bahdanau2014neural},
+the decoder  is  a  long short-term  memory recurrent neural  network,  and  the
+encoder consists of  two one-dimensional  convolutional  networks:  One  network
+generates  a sequence  containing  the  encoded  information  about  fixed-sized
+contexts (of kernel  size), and the other computes the conditional input for the
+soft-attention  mechanism   connecting   the   encoder  and  the  decoder.  Fig.
+\ref{fig:convenc} schematically illustrates this architecture.
+
+
+The convolutional networks in the encoder only contain convolutional layers without any pooling layer. This allows the full input sequence length to the encoder to be retained. Moreover stacking multiple convolutional layers on top of each other can increase the context width for each input token of the input sequence.
+
+As convolutional layers do all their calculations in parallel and therefore cannot distinguish position of the input tockens, it is necessary to somehow encode the positional information in the input sequence before feeding it to the encoder. To this end, \citet{DBLP:journals/corr/GehringAGD16} proposes to feed a sequence $e_1, e_2, ..., e_m$ to the ecoder in which,
+
+\begin{equation*}
+  e_i = w_i + l_i
+\end{equation*}
+
+where $w_i$ is a word embedding on the vocabulary of the source language and $l_i$ is a positional embedding of the words of the source sentence.
+
+
+The model aims to capture the conditional prop
 
 \begin{equation*}
   p(y_{i+1} \vert y_1, ..., y_i, \textbf{x}) =
@@ -797,6 +825,8 @@ and next sections we review a number of propsed techniques.
 
 
 BLEU score for various WMT tasks:
+
+
 \begin{center}
   \begin{tabular}{lrrr}
   \hline
@@ -810,7 +840,6 @@ BLEU score for various WMT tasks:
 
 
 \begin{align*}
-  e_i &= w_i + l_i \\
   z_i &= \text{CNN-a}(e_i) \\
   c_i &= \sum_{j = 1}^{T}{a_{ij}\text{CNN-c}(e)_j} \\
   a_{ij} &= \frac{exp(d_i^T z_j)}{\sum_{t = 1}^{m}{exp(d_i^T z_t)}} \\
@@ -825,6 +854,7 @@ BLEU score for various WMT tasks:
   \includegraphics[width=0.6\textwidth]{img/CS2S}
 \end{figure}
 
+
 \begin{align*}
   c_i^l &= \sum_{j = 1}^{m}{a_{ij}^l(z_j^u + e_j)} \\
   a_{ij}^l &= \frac{exp(d_i^l \cdot z_j^u)}
@@ -836,6 +866,8 @@ BLEU score for various WMT tasks:
 
 
 BLEU score for various WMT tasks:
+
+
 \begin{center}
   \begin{tabular}{lrrr}
   \hline
@@ -851,9 +883,11 @@ BLEU score for various WMT tasks:
 \subsection{Depthwise Separable Convolutions for NMT}
 
 
-Depthwise Separable Convolution consists of a depthwise convolution, i.e a
-spatial convolution performed independently over every channel of an input,
+Depthwise  Separable Convolution consists of  a  depthwise  convolution,  i.e  a
+spatial convolution performed  independently  over  every channel  of  an input,
 followed by a pointwise convolution, i.e. a regular $1 \times 1$ convolution.
+
+
 \begin{align*}
   Conv(W, y)_{i,j} &= \sum_{k,l,m}^{K,L,M}{W_{k,l,m} \cdot y_{i+k,j+l,m}}
   \\
@@ -865,6 +899,8 @@ followed by a pointwise convolution, i.e. a regular $1 \times 1$ convolution.
 
 
 For a convolution with $c$ channels and filters and kernel size $k$,
+
+
 \begin{center}
   \begin{tabular}{lr}
   \hline
@@ -910,6 +946,8 @@ For a convolution with $c$ channels and filters and kernel size $k$,
 
 
 BLEU score on newstest 2014 evaluation set:
+
+
 \begin{center}
   \begin{tabular}{lr}
   \hline
@@ -923,11 +961,7 @@ BLEU score on newstest 2014 evaluation set:
 \end{center}
 
 
-\section{Conclusion}
-% TODO: Conclusion
-
-
-\bibliographystyle{plain}
+\bibliographystyle{plainnat}
 \bibliography{literature}
 
 
