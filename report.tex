@@ -46,7 +46,7 @@ the MT research and highlight the most important breakthroughs.
 \section{Deep Learning}
 In the recent  years,  Deep  learning has  been making a big  impact  in various
 fields of computer science. This impact is profound  in  the perceptual learning
-task  in  the  fields like computer vision, natural  language  processing,  etc,
+task  in  the  fields like computer vision, natural  language  processing,  etc
 \cite{lecun2015deep}. Though the idea of training a multi layered neural network
 to perform function  approximation  is  known to the research community  for  at
 least  a couple  of  decades\cite{schmidhuber2015deep},  due  to the  nature  of
@@ -59,18 +59,23 @@ the  annual ImageNet classification  challenge \cite{deng2009imagenet},  AlexNet
 \cite{krizhevsky2012imagenet} showed a  remarkable improvement  in the state-of-
 the-art  accuracy.  Within  a  few years, more sophisticated  architectures like
 Google  Inception  Network \cite{szegedy2016rethinking},  Deep  Residual Network
-\cite{he2016deep}, etc., has improved the accuracy to be comparable with a human
+\cite{he2016deep}, etc., have improved the accuracy to be comparable with a human
 in that task. The generality of the neural network made it easily possible to be
 used for a wide variety of tasks. With more people  working on deep learning and
-the ideas arising in solving on the problems being easily transferable, the deep
+the ideas arising in solving the problems being easily transferable, the deep
 learning  is the  state-of-the-art for  many learning  tasks. In  the  following
 section, we will briefly summarize the basics of deep learning.
 
+\begin{figure}
+  \includegraphics[width=.99\linewidth]{img/artificial.jpg}
+  \caption{ An artificial neuron (perceptron)}
+  \label{fig:ann}
+\end{figure}
 
 The  basic  building block of a  Multilayer network, or  in more technical  term
-Multilayer  perceptron  (MLP)  is a  perceptron.  The  preceptron  \ref{fig:ann}
+Multilayer  perceptron  (MLP)  is a  perceptron.  The  preceptron shown in Fig.\ref{fig:ann}
 closely resembles a neuron in a human brain. A preceptron takes
-a set of input  values,  computes a weighted sum of  the  inputs, and outputs  a
+a set of input  values,  computes a weighted sum of the  inputs, and outputs  a
 scalar value of a after applying an activation function (mostly non-linear). The
 weights for  computing  the  weighted  sum and  the threshold  in the activation
 function  are initially  set to random values and are learned  from the training
@@ -89,33 +94,29 @@ following,
 
 
 A layer has many number of neurons and many layers are stacked one on top of the
-other to form a MLP. An  MLP  with very  many layers is  called  as Deep  Neural
+other to form a MLP. An  MLP  with  many layers is  called  as Deep  Neural
 Network(DNN). In the following section we will discuss  the properties  of  DNNs
 and how they are useful in the context of supervised machine learning.
 
 
-\begin{figure}
-  \includegraphics[width=.99\linewidth]{img/artificial.jpg}
-  \caption{ An artificial neuron (perceptron)}
-  \label{fig:ann}
-\end{figure}
+
 
 
 \begin{figure}
   \includegraphics[width=.99\linewidth]{img/mlp.png}
-  \caption{Layered representation in an MLP}
+  \caption{Layered representation in a MLP}
   \label{fig:mlp}
 \end{figure}
 
 
 \subsection{Supervised  learning}   Supervised  learning   is   the  problem  of
-predicting an new output $y^\prime$ for a new  input $x^\prime$,
-and set of training  data that provides a  set of  input and output $\{x \mapsto
+predicting a new output $y^\prime$ for a new  input $x^\prime$,
+and set of training  data that contains a  set of  input and output $\{x \mapsto
 y\}$. Most of the supervised learning problems  can be  formulated  as either  a
 classification   or  regression   problem.  Classification  is  the  problem  of
 predicting the  label for a given $x^\prime$ among a set of given labels
-$\{Y\}$  while regression  of predicting a continuous valued output for  a given
-input. The usual way  of  doing supervised learning  is to extract features from
+$\{Y\}$,  while regression  is predicting a continuous valued output for a given
+input. The usual way  of doing supervised learning  is to extract features from
 the given data and train a model to perform classification or regression.
 
 
@@ -159,7 +160,7 @@ The Convolutional NN are shown in \ref{fig:cnn}
 
 \begin{figure}
   \includegraphics[width=.99\linewidth]{img/cnn.png}
-  \caption{CNN}
+  \caption{A CNN with a fully connected neurons in the last layer.}
   \label{fig:cnn}
 \end{figure}
 
@@ -211,7 +212,7 @@ The Convolutional NN are shown in \ref{fig:cnn}
 The neurons  in the RNNs have recurrent self connections. i.e. the output of the
 neurons  are connected back to the inputs. Thus the output at time step $t_1$ is
 computed  with taking  output  at  time  step  $t_0$  as  input.  The  recurrent
-connections  are  shown  Fig. \ref{fig:rnn}  This  enables  the RNNs to have  an
+connections  are  shown  Fig.\ref{fig:rnn}.  This  enables  the RNNs to have  an
 internal  memory.  RNNs  are  trained  with  the  a  modified  version  of  back
 propagation     called    \textbf{Back    Propagation     Through    Time(BPTT)}
 \cite{werbos1990backpropagation}.
@@ -223,8 +224,7 @@ simply converges to  zero  after  a  few  time  steps.  This  problem  known  as
 \cite{bengio1994learning}.
 
 To alleviate  the  vanishing  gradients problem,  a special  architecture called
-\textbf{Long Short Term Memory(LSTM)} \cite{hochreiter1997long} is used. An LSTM
-cell is shown in \label{fig:lstm}.
+\textbf{Long Short Term Memory(LSTM)} \cite{hochreiter1997long} is used.
 
 LSTM cells has separate internal memory vector and has three gates--forget gate,
 add gate, and output gate. To understand the Mathematical intuition behind these
@@ -232,27 +232,27 @@ gates,  let us consider  a LSTM cell in  a  hidden state  $h$  and internal cell
 memory  vector $c_{t-1}$. At  time $t$, the cell  takes  input  $x_t$,  previous
 output  $h_{t-1}$  and  update the  cell memory to $c_{t}$,  produces the output
 $h_{t}$. The forget computes a vector  size $c$ between  0  and  1. This  vector
-determines who  information should be  preserved  and  what  should be forgotten
-based on the current input  $x_t$ as shown in \ref{fig:lstm_forget}. This vector
+determines what  information should be  preserved  and  what  should be forgotten
+based on the current input  $x_t$ as shown in Fig.\ref{fig:lstm_forget}. This vector
 is  later  multiplied with  the  cell  memory.  If  the  vector  is  all  zeros,
 multiplying makes all  cell  state to forget everything while all ones  preserve
 everything.  Then  the add gate computes which  parts in  the cell  states to be
-updates as shown in  \ref{fig:lstm_add} and the new  data to be updated as shown
-in \ref{fig:lstm_add1}. Finally  the output gate generates the output  $h_t$ and
-does not modify the cell state as shown in \ref{fig:lstm_output}.
+updates as shown in  Fig.\ref{fig:lstm_add} and the new  data to be updated as shown
+in Fig.\ref{fig:lstm_add1}. Finally  the output gate generates the output  $h_t$ and
+does not modify the cell state as shown in Fig.\ref{fig:lstm_output}.
 
 
 \section{Traditional Machine Translation}
 
 
 \subsection{Evaluation score} Translation is a hard task to define an evaluation
-score to  measure how  well a model  is performing due to inherent complexity of
+score for measuring how  well a model  is performing due to inherent complexity of
 the task. The most widely  used evaluation metric is called Bilingual Evaluation
-Understudy(BLEU) \cite{papineni2002bleu}.  Depends on  modified n-gram precision
-(or  co-occurrence). Needs  lots of target sentences for better results. Despite
+Understudy(BLEU) \cite{papineni2002bleu}. It depends on  modified n-gram precision
+(or  co-occurrence) and needs  lots of target sentences for better results. Despite
 being the most widely used metric, many researchers have expressed concern about
 the    effectiveness     of     the     metric     \cite{zhang2004interpreting},
-\cite{callison2006re}, \cite{ananthakrishnan2007some}.  Consider  the  following
+\cite{callison2006re}, \cite{ananthakrishnan2007some}. To understand how BLEU score works, consider  the  following
 translation candidates
 
 
@@ -305,7 +305,9 @@ N-gram Precision: 8
 
 
 Thus candidate 1 is better.
-\textbf{Issues with N-gram precision}
+
+
+\textbf{Issues with N-gram precision:}
 
 
 Candidate: \red{the the the the the the the.} \\
@@ -402,7 +404,7 @@ simplified to,
 \end{equation*}
 
 
-Phrase  based  Machine  Translation  the  were widely  scalable  models  in  the
+PBMT were the widely  scalable  models  in  the
 beginning of the millennium \cite{koehn2003statistical}. The model works  at the
 level of phrases instead of words and had a lot of individual components but the
 core idea is learning statistical patterns in training data.
@@ -434,7 +436,7 @@ years, the recurrent neural networks started to  achieve  performance comparable
 to       PBMT       as       in       \cite{kalchbrenner2013recurrent}       and
 \cite{hermann2013multilingual}. Most  of  the  early architectures  were  simple
 encoder-decoder architectures. An simple working of encoder-decoder architecture
-for machine translation is shown in Fig. \ref{fig:enc_dec}. The architecture has
+for machine translation is shown in Fig.\ref{fig:enc_dec}. The architecture has
 an encoder that takes a sentence in source language and encodes it into a vector
 $S$ of fixed length. The decoder takes the embedding $S$ as  input and generates
 the sentence in the target language. Some of the major drawbacks with the simple
@@ -461,8 +463,8 @@ architecture is that
 
 \subsection{Jointly learning to align and translate} \label{sec:JT}
 The paper  \cite{bahdanau2014neural}  address this  issue of having a fixed size
-embedding  by  introducing  the  idea of  context  \ref{fig:context}.  The  main
-proposal was to use,
+embedding  by  introducing  the  idea of  context  as shown in Fig.\ref{fig:context}.  The  main
+proposal was
 
 
 \begin{enumerate}
@@ -479,10 +481,8 @@ The whole embedding  is made available  to  the decoder and $C$ describes  which
 part of the embedding should be focused to generate  the current  word based  on
 the previous word.
 
-Encoder  RNN,  at each  input step t,  generates  hidden state,  $h_t  =  f(x_t,
-h_{t-1})$.
-
-Unlike in the previous models where only the last hidden state is made available
+Encoder  RNN  at each  input step t,  generates  hidden state,  $h_t  =  f(x_t,
+h_{t-1})$. Unlike in the previous models where only the last hidden state is made available
 to the decoder, this paper  provided  all  the hidden state  and also a  context
 vector that has a weight for each of the hidden vector. The context vector helps
 the decoder to focus on a part of the sentence. $c = q(\{h_1,\cdots,h_{T_x}\})$.
@@ -544,7 +544,7 @@ The context learns to focus on the correct order for the decoder.
 The  idea of context  used in the paper was adapted by the MT research community
 with   the  name   of  attention.  Several  attention  mechanism  were  proposed
 \cite{luong2015effective},  \cite{cho2014learning},  \cite{gregor2015draw}.  The
-context proposed in  label{sec:JT} to align hidden state  $h_t$ with each source
+context proposed in  section \ref{sec:JT} to align hidden state  $h_t$ with each source
 hidden state $\bar{h_s}$ can be formulated a,
 
 
@@ -583,7 +583,7 @@ This paper  also made  use of  the  bi-directional  LSTM  in  the layers  of the
 Encoder. Just like  an  LSTM that has an internal memory to comprehend  the past
 states, the LSTM also comprehends the words that comes next in the sentence.  It
 has two internal state---one for past states and one for the future state. A bi-
-directional LSTM is shown in \ref{fig:birnn}.
+directional LSTM is shown in Fig.\ref{fig:birnn}.
 
 The whole model is trained with standard maximum-likelihood  error  minimization
 $\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} |  X^{(i)}) $ with
@@ -597,7 +597,7 @@ viable alternative phrase based machine translation system.
 \subsection{Sequence  to Sequence models.}
 \label{sec:seq}  With  in  an  year,  more   deep   and   powerful  models  were
 computationally possible. Taking the availability of the computational power  to
-advantage  a  new  framework  for  learning  sequence  to sequence  mapping were
+advantage  a  new  framework  for  learning  sequence  to sequence  learing was
 proposed. A sequence to sequence model formulated as $$ p(y_1, \cdots, y_T| x_1,
 \cdots, x_T) =  \prod_{t=1}^{T} p(y_t| v, y_1,  \cdots,  y_{t-1})$$ where $v$ is
 the internal memory of the RNNs. With more powerful RNNs, this model can be used
@@ -632,9 +632,9 @@ recognition,   machine   translation,    etc    as   shown    in    the    paper
 \end{figure}
 
 
-A simple  sequence  to sequence  model is shown in Fig.  \ref{fig:seq}.  Just by
+A simple  sequence  to sequence  model is shown in Fig.\ref{fig:seq}.  Just by
 making  the  model more  deeper,  without  any  special  treatment  for  machine
-translation, the paper achieved  state-of-the art results. The model as  trained
+translation, the paper achieved  state-of-the art results. The model is  trained
 on WMT  English  to French dataset  with 12M sentences consisting of 348M French
 words and 304M  English words using 160,000 of  the  most frequent words for the
 source  language  and 80,000 of the most frequent words for the target language.
@@ -686,18 +686,18 @@ engineering  details and  also has a lot  of  components  that are inspired from
 other recent breakthroughs in machine translation and  deep learning research in
 general.  The basic architecture is heavily inspired by the jointly  learning to
 align and  translate  \ref{sec:JT}  and  \ref{sec:seq}. The core architecture is
-shown in Fig. \ref{fig:gnmt1}. It combines the idea of context with the a deeper
+shown in Fig.\ref{fig:gnmt1}. It combines the idea of context with the a deeper
 sequence  to sequence  encoder- decoder  model with bi-directional LSTM  in  the
 initial layers  of  the  encoder. Both  the  encoder  and decoder contains eight
 layer.  It   also   made  use  of  the  Residual   connections   introduced   in
 \cite{he2016deep}. Residual connection  are helpful in alleviating the vanishing
-gradients problem in an interesting manner  as shown in \ref{fig:residual}. In a
+gradients problem in an interesting manner  as shown in Fig.\ref{fig:residual}. In a
 DNN  each  layer  can  be  interpreted as transforming  the  input  $x$ to a new
 manifold by learning  $F(x)$  but in a residual network only learn the change to
 be  applied to  the  input  ($x  +  F(x)$).  There  is always an  identity  skip
 connection between layers helping in the constant gradient  flow which otherwise
 might vanish. The residual learning enables training very deep networks as shown
-in Fig. \ref{fig:gnmtres}.
+in Fig.\ref{fig:gnmtres}.
 
 The author  also tried to use a enhanced  cost function. The usual cost function
 maximized    by    the   training    process    is   the   maximum    likelihood
@@ -712,7 +712,7 @@ In terms of the training process, just one encoder  and one decoder  is used for
 all  language  pairs. The authors  reported several nice properties of the joint
 language training. One highlight  is that  this enables zero-shot learning.  The
 system is able  to translate between the  language  pairs it never  saw  in  the
-training data. Also the languages for which huge  training data exists benefited
+training data. Also the languages for which huge training data does not exists benefited
 from the joint training. The zero shot learning property  is discussed in detail
 the  paper  \cite{johnson2016google}.  To  enable  a single decoder to  generate
 target  sentence for  all  the  languages,  the  input  text  is  suffixed  with
@@ -728,7 +728,7 @@ frequent words for the source language and 80,000 of the most frequent words for
 the target language. Every  out-of-vocabulary word was replaced with  a  special
 \textbf{UNK} token.  The network has 4  LSTM layers with 1000 LSTM cells in each
 layer. The paper used 1000 dimensional  word embedding to represent the words as
-vector  following  the word2vec  paper  \cite{mikolov2013distributed}.  word2vec
+vector  following  the word2vec  paper  \cite{mikolov2013distributed}.  Word2vec
 formulated  the  problem  of learning word embedding as an  energy  maximization
 problem  using a  simple neural network with just  one  hidden layer. The energy
 maximized  is  called  Negative  sampling.  The resulting  vector  embedding  is
@@ -740,7 +740,7 @@ machine translation.
 
 
 
-One another interesting aspect of the GNMT is the use of Quantizable Model and Quantized Inference. Since GNMT has to serve a huge volume of users in the production, the service is very computationally intensive making hard for low latency translation difficult. Quantized Inference is the process of using low precession arithmetic operations during the inference. The idea of using low precession arithmetic got inference has been tried since the early days of neural networks. In the recent years, the authors in \cite{wu2016quantized} successfully demonstrated that a CNN training can be sped up by a factor of 4-6 with minimal loss of accuracy in the classification task. More interestingly \cite{li2016ternary} showed that weights of the neural networks can be quantized to just three states, -1,0,1. But most of these success are mostly restricted to CNNs. In the paper GNMT team did the same of RNNs. To achieve this, the model were constrained during training time. The nature of LSTMs remembering state across multiple time steps posts additional challenges in quantizing RNNs. he forward computation of an LSTM stack with residual connections is modified to the following: 
+One another interesting aspect of the GNMT is the use of Quantizable Model and Quantized Inference. Since GNMT has to serve a huge volume of users in the production, the service is very computationally intensive making hard for low latency translation difficult. Quantized Inference is the process of using low precession arithmetic operations during the inference. The idea of using low precession arithmetic got inference has been tried since the early days of neural networks. In the recent years, the authors in \cite{wu2016quantized} successfully demonstrated that a CNN training can be sped up by a factor of 4-6 with minimal loss of accuracy in the classification task. More interestingly \cite{li2016ternary} showed that weights of the neural networks can be quantized to just three states, -1,0,1. But most of these success were restricted to CNNs. In the paper GNMT team did the same of RNNs. To achieve this, the model were constrained during training time. The nature of LSTMs remembering state across multiple time steps posts additional challenges in quantizing RNNs. he forward computation of an LSTM stack with residual connections is modified to the following: 
 
 
   
@@ -755,7 +755,21 @@ c^{i+1}_t		  & =  max(-\delta, min(\delta,c^{'i+1}_t ))
 \end{split}
 \end{equation}
 
+and for keeping notation simple we drop the superscript $i$ and expand further as,
 
+\begin{equation}
+\begin{split}
+W   & = [W_1,W_2....W_8] \\
+i_t		  & =  sigmoid (W_1x_t + W_2m_t) \\
+{i'}_t	  & = tanh(W_3x_t + W_4m_t) \\
+f_t		  & =  sigmoid (W_5x_t + W_6m_t) \\
+o_t    & = sigmoid (W_7x_t + W_8m_t) \\
+c_t		  & =  c_{t-1} \odot f_t + i^{'}_t \odot i_t \\
+m_t & = c_t \odot o_t
+\end{split}
+\end{equation}
+ 
+All the operations in the above equations are performed only with fixed point 8 bit or 16 bit integer multiplications.
 
 
 \subsection{A Convolutional Encoder Model for NMT}
