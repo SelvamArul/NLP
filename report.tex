@@ -1038,14 +1038,6 @@ prediction given the  encoded inputs and the encoding of the previously produces
 outputs. Fig. \ref{fig:sn} illustrates the architecture of SliceNet model.
 
 
-
-
-\begin{align*}
-  Co&nvStep_{d,s}(W, x) = LN(SepConv_{d,s}(W, ReLU(x))) \\
-  LN&(x) = \frac{G}{\sigma(x)}(x - \mu(x)) + B
-\end{align*}
-
-
 \begin{figure}
   \center
   \includegraphics[width=\textwidth]{img/SN}
@@ -1054,10 +1046,28 @@ outputs. Fig. \ref{fig:sn} illustrates the architecture of SliceNet model.
 \end{figure}
 
 
+The convolution modules in SliceNet use rectified linear units (ReLU) as non-linearities. Besides the ReLU activations are followed by a normalization layer. Therefore a complete convolution module is defined as,
+
+
+\begin{align*}
+  ConvStep_{d,s}(W, x) &= LN(SepConv_{d,s}(W, ReLU(x))) \\
+  LN(x) &= \frac{G}{\sigma(x)}(x - \mu(x)) + B
+\end{align*}
+
+
+In order to encode the  positional information, SliceNet  add a so-called timing
+signal to the input sequence. This signal is defined as follows,
+
+
 \begin{align*}
   timing(t, 2d) &= sin(t/1000^{2d/depth}) \\
   timing(t, 2d + 1) &= cos(t/1000^{2d/depth})
 \end{align*}
+
+
+For  given  source of shape $[m,  depth]$  and target  of shape $[n, depth]$ the
+attention mechanism used in SliceNet computes the feature vector similarities at
+each position and re-scales according to the depth,
 
 
 \begin{align*}
