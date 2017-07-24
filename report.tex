@@ -45,25 +45,25 @@ the MT research and highlight the most important breakthroughs.
 
 \section{Deep Learning}
 
-In  the recent years, Deep learning  has  been making  a big  impact in  various
-fields of computer science. This impact is  profound in the perceptual  learning
-task in  the  fields  like computer vision,  natural  language  processing,  etc
+In  the  recent  years, Deep learning  has been  making  a big impact in various
+fields of computer science. This impact is profound  in the  perceptual learning
+task  in  the fields  like  computer  vision, natural  language  processing, etc
 \cite{lecun2015deep}. Though the idea of training a multi layered neural network
-to perform  function  approximation is known  to  the  research community for at
-least  a  couple  of  decades\cite{schmidhuber2015deep}, due  to  the  nature of
-training  problem  requiring large  computational resources,  the  multi layered
-neural network  remained  less practical.  With  the advent of  general  purpose
-graphical processing  units(GPGPUs)  and the availability of training data,  the
-neural networks are now  a practical solution  for many perceptual tasks. One of
-the early success of deep learning was in the field of  image classification. In
-the annual  ImageNet classification challenge  \cite{deng2009imagenet},  AlexNet
-\cite{krizhevsky2012imagenet} showed  a  remarkable improvement in the state-of-
-the-art accuracy.  Within  a  few  years, more sophisticated  architectures like
-Google  Inception Network  \cite{szegedy2016rethinking}, Deep  Residual  Network
-\cite{he2016deep},  etc.,  have improved  the accuracy to  be  comparable with a
+to  perform function approximation is known to  the  research community  for  at
+least  a  couple of  decades\cite{schmidhuber2015deep}, due  to  the  nature  of
+training problem  requiring  large computational  resources,  the  multi layered
+neural  network  remained less  practical. With  the advent  of general  purpose
+graphical processing units (GPGPUs) and the  availability of training data,  the
+neural networks are now a practical solution for many perceptual tasks.  One  of
+the early success  of deep learning was in the field of image classification. In
+the  annual ImageNet classification  challenge \cite{deng2009imagenet},  AlexNet
+\cite{krizhevsky2012imagenet} showed a  remarkable improvement  in the state-of-
+the-art accuracy. Within  a  few years,  more  sophisticated architectures  like
+Google Inception  Network \cite{szegedy2016rethinking},  Deep  Residual  Network
+\cite{he2016deep}, etc.,  have  improved the  accuracy  to be  comparable with a
 human in that task. The generality of the neural network made it easily possible
-to be  used  for  a  wide variety  of tasks.  With  more  people working on deep
-learning  and   the  ideas  arising  in  solving  the   problems   being  easily
+to  be used  for  a wide  variety  of tasks.  With  more people working  on deep
+learning  and  the   ideas  arising   in  solving   the  problems  being  easily
 transferable, the deep learning is the state-of-the-art for many learning tasks.
 In the following section, we will briefly summarize the basics of deep learning.
 
@@ -88,7 +88,7 @@ following,
 
 
 \[
-  f(x)=
+  f (x)=
   \begin{cases}
     1, & \text{if }  A x > c \\
     0, & \text{otherwise}
@@ -97,9 +97,9 @@ following,
 
 
 A layer has many number of neurons and many layers are stacked one on top of the
-other  to  form  a MLP.  An  MLP  with  many  layers  is  called as Deep  Neural
-Network(DNN). In the following section  we  will discuss the properties of  DNNs
-and how they are useful in the context of supervised machine learning.
+other  to  form a MLP. An MLP  with many layers is called as Deep Neural Network
+(DNN).  In the following section we  will discuss the properties of DNNs and how
+they are useful in the context of supervised machine learning.
 
 
 \begin{figure}
@@ -144,13 +144,13 @@ directly from the given training data and avoids hand engineered features.
 \end{equation*}
 
 
-The DNNs  with neurons in one  layers being connected to all the neurons  in the
-next  layer  are  called  Feed Forward Networks. The feed  forward networks  are
-harder  to train since  they have lots  of parameters. To make  a the DNNs learn
-useful representation for performing supervised learning,  we need special types
+The DNNs with neurons in one  layers being  connected to all  the neurons in the
+next  layer are called  Feed Forward Networks.  The  feed forward  networks  are
+harder to  train since they have  lots of  parameters. To  make a the DNNs learn
+useful representation for performing supervised learning, we need special  types
 of  connections  between  the  neurons.  Two  of  the  most  commonly  used  DNN
-architectures  are  Convolutional  Neural  Networks(CNN)  and  Recurrent  Neural
-Networks(RNN). In the following section  we  will discuss these architectures in
+architectures  are  Convolutional Neural  Networks  (CNN) and  Recurrent  Neural
+Networks (RNN). In the following section we  will discuss these architectures in
 detail.
 
 
@@ -160,12 +160,11 @@ Convolutional Neural netowrks  are  a class  of  feed-forward  networks in which
 hidden  layers  are   either  convolutional,   pooling  for  fully-connected.  A
 convolutional layer applies a convolution operation to the input, and passes the
 result to  the next  layer. A pooling layer combines the outputs of  a number of
-neurons from  previous  layer  into  a single value.  The  most commont  pooling
+neurons from  previous  layer  into  a single value.  The  most common   pooling
 operations are  max-pooling which selects the  maximum value from its  receptive
 field  and  average-pooling which  calculates the  average  of values  from  its
 receptive field.  A fully-connected layer  connects every neuron in one layer to
-every   neuron  to  another   layer,   in   a  similar   way   as   perceptrons.
-Fig.\ref{fig:cnn} depicts a CNN.
+every neuron in another layer. Fig. \ref{fig:cnn} depicts a CNN.
 
 
 \begin{figure}
@@ -173,6 +172,41 @@ Fig.\ref{fig:cnn} depicts a CNN.
   \caption{A CNN with a fully connected neurons in the last layer.}
   \label{fig:cnn}
 \end{figure}
+
+
+\subsubsection{Recurrent Neural Networks}
+
+The neurons in the RNNs have recurrent self  connections. i.e. the output of the
+neurons are connected back  to the inputs. Thus the output at time step $t_1$ is
+computed with  taking  output  at  time  step  $t_0$  as  input.  The  recurrent
+connections are  shown  Fig.\ref{fig:rnn}. This  enables  the  RNNs to  have  an
+internal  memory.  RNNs  are  trained  with  the  a  modified  version  of  back
+propagation   called    \textbf{Back    Propagation   Through    Time    (BPTT)}
+\cite{werbos1990backpropagation}.
+
+RNNs in general are harder to train and  this is particularity  evident when the
+BPTT is  done over a larger number of time steps. This is because  the gradients
+simply  converges  to  zero  after a  few time  steps.  This  problem  known  as
+\textbf{vanishing   gradients   problem}   is   a   well    studied   phenomenon
+\cite{bengio1994learning}.
+
+To  alleviate  the  vanishing  gradients problem, a  special architecture called
+\textbf{Long Short Term Memory (LSTM)} \cite{hochreiter1997long} is used.
+
+LSTM cells has separate internal memory vector and has three gates--forget gate,
+add gate, and output gate. To understand the Mathematical intuition behind these
+gates, let  us consider a  LSTM  cell  in a hidden state  $h$  and internal cell
+memory  vector $c_{t-1}$. At  time  $t$,  the  cell  takes input $x_t$, previous
+output $h_{t-1}$ and update  the cell memory  to  $c_{t}$,  produces  the output
+$h_{t}$. The forget  computes a  vector size $c$ between  0 and  1.  This vector
+determines  what information should  be preserved and  what should be  forgotten
+based on the current  input  $x_t$  as shown in  Fig.\ref{fig:lstm_forget}. This
+vector is later  multiplied with the cell memory. If the vector  is  all  zeros,
+multiplying makes all cell state to  forget  everything while  all ones preserve
+everything. Then  the  add  gate computes which  parts in the  cell states to be
+updates as shown  in Fig.\ref{fig:lstm_add} and the new  data  to  be updated as
+shown in Fig.\ref{fig:lstm_add1}. Finally the  output gate generates  the output
+$h_t$ and does not modify the cell state as shown in Fig.\ref{fig:lstm_output}.
 
 
 \begin{figure}
@@ -217,51 +251,16 @@ Fig.\ref{fig:cnn} depicts a CNN.
 \end{figure}
 
 
-\subsubsection{Recurrent Neural Networks}
-
-The neurons in the RNNs have recurrent  self connections. i.e. the output of the
-neurons are  connected back to the inputs. Thus the output at time step $t_1$ is
-computed  with  taking output  at  time  step  $t_0$  as  input.  The  recurrent
-connections  are  shown  Fig.\ref{fig:rnn}.  This  enables the  RNNs to  have an
-internal  memory.  RNNs  are  trained  with  the  a  modified  version  of  back
-propagation    called    \textbf{Back    Propagation     Through     Time(BPTT)}
-\cite{werbos1990backpropagation}.
-
-RNNs in general are harder  to  train and this is particularity evident when the
-BPTT is done over a larger number of time steps.  This is because the  gradients
-simply converges  to  zero after  a  few  time  steps.  This  problem  known  as
-\textbf{vanishing   gradients   problem}    is   a   well   studied   phenomenon
-\cite{bengio1994learning}.
-
-To  alleviate  the  vanishing  gradients  problem, a special architecture called
-\textbf{Long Short Term Memory(LSTM)} \cite{hochreiter1997long} is used.
-
-LSTM cells has separate internal memory vector and has three gates--forget gate,
-add gate, and output gate. To understand the Mathematical intuition behind these
-gates, let  us consider a  LSTM cell  in a  hidden state  $h$ and  internal cell
-memory vector  $c_{t-1}$.  At  time  $t$,  the cell takes  input $x_t$, previous
-output $h_{t-1}$ and update  the  cell memory to  $c_{t}$, produces  the  output
-$h_{t}$. The forget  computes  a  vector size $c$  between  0 and 1. This vector
-determines what  information should be preserved  and what  should  be forgotten
-based  on the  current  input $x_t$ as shown in  Fig.\ref{fig:lstm_forget}. This
-vector is later  multiplied with  the cell memory.  If the vector  is all zeros,
-multiplying makes  all cell state to forget everything  while all ones  preserve
-everything. Then the add gate  computes  which parts  in  the cell states  to be
-updates as  shown in Fig.\ref{fig:lstm_add}  and the new  data to be updated  as
-shown  in Fig.\ref{fig:lstm_add1}. Finally the output gate generates the  output
-$h_t$ and does not modify the cell state as shown in Fig.\ref{fig:lstm_output}.
-
-
 \section{Traditional Machine Translation}
 
 \subsection{Evaluation score}
 
-Translation is a hard task to define an evaluation score for measuring how  well
-a model is performing due to inherent complexity  of the  task.  The most widely
-used  evaluation   metric   is  called   Bilingual  Evaluation  Understudy(BLEU)
+Translation is a hard task to define an evaluation score for  measuring how well
+a model is  performing  due to inherent complexity of the task. The most  widely
+used  evaluation  metric  is  called  Bilingual   Evaluation  Understudy  (BLEU)
 \cite{papineni2002bleu}.  It  depends  on  modified  n-gram  precision  (or  co-
 occurrence) and needs lots of target sentences for better results. Despite being
-the most widely  used  metric, many researchers have expressed concern about the
+the  most widely used metric, many researchers have expressed  concern about the
 effectiveness of the metric \cite{zhang2004interpreting}, \cite{callison2006re},
 \cite{ananthakrishnan2007some}. To understand how BLEU score works, consider the
 following translation candidates
@@ -390,15 +389,15 @@ e^{I} =  \argmin_{I,e^{I}} \Bigg\{
 \end{equation*}
 
 
-Here  $L(e^I, e^{\prime i^\prime})$ denotes loss function under construction. It
-measures  the loss  (or errors) of a  candidate translation $e^{I}$ assuming the
+Here $L (e^I, e^{\prime i^\prime})$ denotes loss function under construction. It
+measures  the loss  (or errors) of a candidate translation $e^{I}$ assuming  the
 correct translation is $e^{\prime i^\prime}$. If the loss function is assumed to
-be 0-1  loss meaning  zero if wrong and 1 if correct, then the Bayes rule can be
+be  0-1 loss meaning zero  if wrong and 1 if correct, then the Bayes rule can be
 simplified to,
 
 
 \begin{equation*}
-  e^{I} = \argmax_{I,e^{I}} \Bigg\{Pr(e^{\prime i^\prime} | f^J) \Bigg\}
+  e^{I} = \argmax_{I,e^{I}} \Bigg\{Pr (e^{\prime i^\prime} | f^J) \Bigg\}
 \end{equation*}
 
 
@@ -435,7 +434,7 @@ years, the recurrent neural networks started to  achieve  performance comparable
 to       PBMT       as       in       \cite{kalchbrenner2013recurrent}       and
 \cite{hermann2013multilingual}. Most  of  the  early architectures  were  simple
 encoder-decoder architectures. An simple working of encoder-decoder architecture
-for machine translation is shown in Fig.\ref{fig:enc_dec}. The architecture has
+for machine translation is shown in Fig. \ref{fig:enc_dec}. The architecture has
 an encoder that takes a sentence in source language and encodes it into a vector
 $S$ of fixed length. The decoder takes the embedding $S$ as  input and generates
 the sentence in the target language. Some of the major drawbacks with the simple
@@ -494,7 +493,7 @@ $c$ and all previously predicted words $\{ y_1, \cdots, y_{t-1}\}$
 
 
 \begin{equation*}
-  p(y) = \prod^{T}_{t=1} p(y_t | \{ y_1, \cdots, y_{t-1}\} ,c )
+  p(y) = \prod^{T}_{t=1} p(y_t | \{ y_1, \cdots, y_{t-1}\}, c)
 \end{equation*}
 
 
@@ -517,7 +516,7 @@ sentence $i$, is  computed  as  a weighted  sum of  hidden states of the encoder
 
 
 \begin{equation*}
-  \alpha_{ij} = \frac{ exp(e_{ij})}{ \sum_{k=1}^{T_x} exp (e_{ik})}
+  \alpha_{ij} = \frac{ exp (e_{ij})}{ \sum_{k=1}^{T_x} exp(e_{ik})}
 \end{equation*}
 
 
@@ -529,6 +528,7 @@ A   feedforward  neural  network   is  used  as   the  alignment  model  and  is
 
 
 \begin{figure}
+  \center
   \includegraphics[height=8cm]{img/contextres.png}
   \caption{Visualization of the context in action}
   \label{fig:contextvis}
@@ -563,7 +563,7 @@ The new attention mechanisms proposed are,
   align(h_t,\bar{h_s}) = \begin{cases}
     h_t^T\bar{h_s} & \text{dot} \\
     h_t^TW_a\bar{h_s} & \text{general} \\
-    v_a^T tanh (W_a[h_t;\bar{h_s'}]) & \text{concat}
+    v_a^T tanh(W_a[h_t;\bar{h_s'}]) & \text{concat}
   \end{cases}
 \end{equation*}
 
@@ -587,7 +587,7 @@ directional LSTM is shown in Fig.\ref{fig:birnn}.
 
 The whole model is trained with standard maximum-likelihood  error  minimization
 $\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} |  X^{(i)}) $ with
-stochastic gradient  descent(SGD) on a mini-batch of 80 sentences. For the first
+stochastic gradient descent (SGD) on a mini-batch of 80 sentences. For the first
 time, the BLEU score was comparable to phrase based machine  translation system.
 But  the fact  that there  are  no  individual pieces  in the  model was a great
 benefit and the  research  community started to  consider  neural systems as  an
@@ -610,7 +610,7 @@ recognition,   machine   translation,    etc    as   shown    in    the    paper
 \begin{figure}
   \centering
   \includegraphics[width=.49\linewidth]{img/seq2seq.pdf}
-  \caption{ Seq2Seq model}
+  \caption{Sequence to sequence model}
   \label{fig:seq}
 \end{figure}
 
@@ -618,7 +618,7 @@ recognition,   machine   translation,    etc    as   shown    in    the    paper
 \begin{figure}
   \centering
   \includegraphics[width=.49\linewidth]{img/seq2seq_deep.pdf}
-  \caption{A more powerfuls Seq2Seq model}
+  \caption{A more powerfuls Sequence to sequence model}
   \label{fig:seqdeep}
 \end{figure}
 
@@ -677,109 +677,110 @@ without doing anything specific for machine translation.
 
 \subsection{Google Neural Machine System}
 
-Most  likely  Google  runs  the  worlds   biggest  machine  translation  service
-supporting 103 languages(at the  time of writing  this article) serving  about a
-billion  query  every  day.  Google  translate team published  a detailed  paper
-describing their neural  machine translation system \cite{wu2016google}. In  the
-following section we will discuss  the key  ideas  described in  the paper. This
-paper  is very unique in the sense that it is much more than an  academic paper.
-The paper explains most  of  the  components  of the system  including a  lot of
-engineering details and  also has a  lot  of components that  are inspired  from
-other recent breakthroughs in machine translation and deep  learning research in
-general. The  basic architecture is heavily inspired  by the jointly learning to
-align  and  translate  \ref{sec:JT} and \ref{sec:seq}. The core architecture  is
+Most  likely  Google  runs  the   worlds  biggest  machine  translation  service
+supporting 103  languages (at the time of writing this  article) serving about a
+billion query  every day.  Google translate  team  published  a  detailed  paper
+describing their  neural machine translation  system \cite{wu2016google}. In the
+following section we will discuss  the key ideas  described  in the  paper. This
+paper is very unique in the  sense that  it is much more than an academic paper.
+The  paper explains  most  of the components of  the system including  a  lot of
+engineering  details and also has  a lot of  components  that are inspired  from
+other recent breakthroughs  in machine translation and deep learning research in
+general. The basic architecture is heavily inspired by the jointly  learning  to
+align and  translate \ref{sec:JT}  and  \ref{sec:seq}. The  core architecture is
 shown in Fig.\ref{fig:gnmt1}. It combines the  idea of context with the a deeper
-sequence to  sequence encoder- decoder  model  with  bi-directional LSTM in  the
-initial  layers  of the encoder.  Both  the  encoder and decoder contains  eight
-layer.  It   also  made   use  of   the  Residual  connections   introduced   in
-\cite{he2016deep}. Residual connection are helpful in alleviating the  vanishing
-gradients problem in an interesting manner as  shown  in Fig.\ref{fig:residual}.
-In a DNN each layer can  be  interpreted as transforming the input $x$  to a new
-manifold  by learning $F(x)$ but in a  residual network only learn the change to
-be  applied  to  the  input  ($x  +  F(x)$). There  is always  an  identity skip
-connection between layers helping in the constant gradient flow  which otherwise
+sequence to  sequence encoder-  decoder  model with bi-directional LSTM  in  the
+initial  layers of  the encoder. Both  the  encoder  and decoder  contains eight
+layer.   It  also   made   use  of   the  Residual   connections  introduced  in
+\cite{he2016deep}.  Residual connection are helpful in alleviating the vanishing
+gradients problem in  an interesting  manner as shown in Fig.\ref{fig:residual}.
+In a DNN each  layer can be interpreted as transforming the  input  $x$ to a new
+manifold  by learning $F (x)$ but in a residual network only learn the change to
+be  applied to  the  input  ($x + F  (x)$). There  is  always  an  identity skip
+connection between layers helping in the  constant gradient flow which otherwise
 might vanish. The residual learning enables training very deep networks as shown
 in Fig.\ref{fig:gnmtres}.
 
-The author  also tried to use a  enhanced cost function. The usual cost function
-maximized    by    the   training    process   is    the    maximum   likelihood
-$$\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N log P_\Theta(Y^{*(i)} | X^{(i)}) $$ but
-this  does  not directly  correspond  to the BLEU score. To improve the BLEU the
-authors  proposed  the  following  cost  function. $$  \mathbb{O}_{ML}(\Theta) =
-\sum_{i=1}^N  \sum_{Y=\mathbb{Y}}^N   log   P_\Theta(Y^{*(i)}  |  X^{(i)})  r(Y,
-Y^{*(i)} ) $$ where $r(\cdot)$ is per-sentence score computed  as an expectation
+The author  also tried to use a enhanced cost  function. The usual cost function
+maximized   by    the    training    process   is    the    maximum   likelihood
+$$\mathbb{O}_{ML}(\Theta) = \sum_{i=1}^N  log  P_\Theta  (Y^{*(i)} | X^{(i)}) $$
+but this does not directly correspond to the BLEU score. To improve the BLEU the
+authors  proposed  the  following  cost function. $$  \mathbb{O}_{ML}(\Theta)  =
+\sum_{i=1}^N  \sum_{Y=\mathbb{Y}}^N  log  P_\Theta  (Y^{*(i)}  |  X^{(i)})  r(Y,
+Y^{*(i)} ) $$ where $r (\cdot)$ is per-sentence score computed as an expectation
 over all $Y$ up to certain-length.
 
-In terms of the training process, just one encoder and  one  decoder is used for
-all  language pairs. The authors reported several nice  properties  of the joint
-language training. One highlight is  that this  enables zero-shot  learning. The
-system  is able to  translate  between  the language pairs it never  saw in  the
-training  data. Also the languages for which  huge training data does not exists
-benefited from the joint training.  The zero shot learning property is discussed
-in detail the  paper \cite{johnson2016google}.  To  enable  a single  decoder to
-generate target sentence for all the languages,  the input text is suffixed with
-additional tokes like $<\_\_EN\_\_>,  <\_\_FR\_\_>,  <\_\_DE\_\_>, <\_\_ES\_\_>$
+In terms  of the training  process, just one encoder and one decoder is used for
+all  language pairs. The authors reported  several nice properties of the  joint
+language training. One  highlight  is that this  enables zero-shot learning. The
+system  is able  to translate  between  the  language pairs it never  saw in the
+training data. Also  the languages for which huge training data does  not exists
+benefited from the joint training. The  zero shot learning property is discussed
+in  detail  the paper  \cite{johnson2016google}.  To enable a  single decoder to
+generate target sentence for all the languages, the input text is  suffixed with
+additional  tokes like $<\_\_EN\_\_>,  <\_\_FR\_\_>, <\_\_DE\_\_>, <\_\_ES\_\_>$
 indicating the target language to be generated.
 
-A  simple sequence  to sequence  model  is shown in  Fig. \ref{fig:seq}. Just by
-making the model more  deeper as  in Fig. \ref{fig:seqdeep}, without any special
-treatment for  machine translation, the paper achieved state-of-the art results.
-The model  as  trained on  WMT  English  to  French dataset with  12M  sentences
+A  simple  sequence to sequence  model is shown in Fig.  \ref{fig:seq}.  Just by
+making  the model more deeper as in Fig.  \ref{fig:seqdeep}, without any special
+treatment for machine translation, the  paper achieved state-of-the art results.
+The  model  as trained on  WMT English  to  French  dataset with  12M  sentences
 consisting of 348M French words and 304M English words using 160,000 of the most
 frequent words for the source language and 80,000 of the most frequent words for
-the  target language. Every  out-of-vocabulary word was replaced with  a special
-\textbf{UNK} token. The network has 4 LSTM  layers with 1000 LSTM  cells in each
-layer. The paper used  1000 dimensional word embedding to represent the words as
-vector  following the  word2vec  paper  \cite{mikolov2013distributed}.  Word2vec
-formulated  the problem of learning  word  embedding as  an energy  maximization
-problem  using a simple neural network with just  one hidden  layer. The  energy
+the  target  language. Every out-of-vocabulary  word was replaced with a special
+\textbf{UNK} token. The network has 4 LSTM layers with 1000  LSTM cells in  each
+layer. The paper used 1000 dimensional word embedding  to represent the words as
+vector  following  the  word2vec paper  \cite{mikolov2013distributed}.  Word2vec
+formulated  the  problem of  learning word embedding  as an energy  maximization
+problem using a simple neural  network  with just one  hidden  layer. The energy
 maximized is  called  Negative  sampling.  The  resulting  vector  embedding  is
-empirically  shown  to  have  arithmetic properties. i.e. $\,$France  - Paris  +
+empirically shown  to  have arithmetic  properties.  i.e.  $\,$France -  Paris +
 Germany is roughly equal to Berlin as shown in Fig. \ref{fig:wordvec}. The paper
-an impressive BLEU  score  of  33.3 even  without  doing  anything specific  for
+an  impressive BLEU score  of  33.3 even  without  doing  anything  specific for
 machine translation.
 
-One  another  interesting aspect of the GNMT is the use of Quantizable Model and
-Quantized  Inference.  Since GNMT has  to  serve a  huge volume of users in  the
-production, the  service is  very  computationally intensive making hard for low
-latency translation difficult.  Quantized Inference is the  process of using low
-precession  arithmetic  operations  during  the inference. The idea of using low
-precession arithmetic got  inference  has  been tried  since  the early days  of
-neural  networks.  In  the recent years,  the  authors in \cite{wu2016quantized}
+One another interesting aspect of the GNMT is the use  of Quantizable  Model and
+Quantized  Inference.  Since GNMT has to  serve  a  huge volume of users  in the
+production,  the service is  very computationally intensive  making hard for low
+latency translation difficult.  Quantized Inference is  the process of using low
+precession  arithmetic operations during  the inference. The idea of  using  low
+precession arithmetic  got  inference has  been  tried  since  the early days of
+neural  networks.  In  the recent  years, the  authors in \cite{wu2016quantized}
 successfully demonstrated that a CNN training can  be sped up by a factor of 4-6
-with minimal loss of  accuracy  in the  classification task. More  interestingly
+with minimal  loss  of accuracy in  the classification task. More  interestingly
 \cite{li2016ternary} showed that weights of the neural networks can be quantized
 to just three states, -1,0,1. But most of these success were restricted to CNNs.
-In the paper  GNMT team did the  same of  RNNs. To achieve this,  the model were
-constrained during training  time. The nature of LSTMs remembering state  across
-multiple time  steps posts  additional challenges in quantizing RNNs. he forward
-computation  of  an  LSTM stack  with  residual connections is  modified to  the
+In the paper GNMT  team  did the same  of RNNs. To  achieve this, the model were
+constrained  during  training time. The nature of LSTMs remembering state across
+multiple time steps posts additional challenges  in quantizing RNNs.  he forward
+computation  of  an LSTM  stack with  residual connections  is modified  to  the
 following:
 
 
 \begin{equation}
   \begin{split}
     c^{'i}_t,m^i_t & = LSTM_i(c^{i}_{t-1},m^i_{t-1}, x^{i-1}_t; W^i ) \\
-    c^{i}_t & = max(-\delta, min(\delta,c^{'i}_t )) \\
+    c^{i}_t & = max(-\delta, min (\delta,c^{'i}_t )) \\
     x^{'i}_t & = m^{i}_t + x^{i-1}_t \\
-    x^{i}_t & =  max(-\delta, min(\delta,x^{'i}_t )) \\
+    x^{i}_t & =  max(-\delta, min (\delta,x^{'i}_t )) \\
     c^{'i}_t,m^i_t & = LSTM_{i+1}(c^{i+1}_{t-1},
                        m^{i+1}_{t-1}, x^{i}_t; W^{i+1} ) \\
-    c^{i+1}_t & =  max(-\delta, min(\delta,c^{'i+1}_t ))
+    c^{i+1}_t & =  max(-\delta, min (\delta,c^{'i+1}_t ))
   \end{split}
 \end{equation}
 
 
-and for keeping notation simple we drop the superscript $i$ and expand further as,
+and for keeping notation simple we drop the superscript $i$  and expand  further
+as,
 
 
 \begin{equation}
   \begin{split}
     W & = [W_1,W_2....W_8] \\
-    i_t & =  sigmoid (W_1x_t + W_2m_t) \\
+    i_t & =  sigmoid(W_1x_t + W_2m_t) \\
     {i'}_t & = tanh(W_3x_t + W_4m_t) \\
-    f_t & =  sigmoid (W_5x_t + W_6m_t) \\
-    o_t & = sigmoid (W_7x_t + W_8m_t) \\
+    f_t & =  sigmoid(W_5x_t + W_6m_t) \\
+    o_t & = sigmoid(W_7x_t + W_8m_t) \\
     c_t & =  c_{t-1} \odot f_t + i^{'}_t \odot i_t \\
     m_t & = c_t \odot o_t
   \end{split}
@@ -820,28 +821,30 @@ and next sections we review a number of propsed techniques.
 \citet{DBLP:journals/corr/GehringAGD16}   proposes   an   encoder-decoder  model
 similar to that of \cite{bahdanau2014neural} in which the encoder is replaced by
 a convolutional neural network. In this model, as  in \cite{bahdanau2014neural},
-the  decoder  is a  long short-term memory  recurrent  neural  network,  and the
-encoder  consists  of two  one-dimensional  convolutional  networks: One network
-(CNN-a) generates a  sequence containing  the encoded information about fixed-
-sized  contexts  (of  kernel  size),  and   the  other  (CNN-c)  computes  the
-conditional input  for the  soft-attention  mechanism connecting the encoder and
-the decoder. Fig. \ref{fig:convenc} schematically illustrates this architecture.
+the  decoder is  a long  short-term memory recurrent  neural  network,  and  the
+encoder  consists of  two one-dimensional convolutional  networks:  One  network
+(CNN-a) generates  a  sequence containing  the encoded information about  fixed-
+sized contexts (of kernel size), and the other (CNN-c) computes the  conditional
+input for  the soft-attention mechanism  connecting the encoder and the decoder.
+Fig. \ref{fig:convenc} schematically illustrates this architecture.
 
-The convolutional  networks in  the  encoder only  contain  convolutional layers
-without  any  pooling layer. This allows the  full input  sequence length to the
-encoder to be  retained. Moreover stacking multiple convolutional layers  on top
-of  each other can increase  the context width for each input token of the input
+The  convolutional  networks  in  the encoder only contain convolutional  layers
+without any pooling layer. This allows  the full input  sequence  length to  the
+encoder  to be  retained. Moreover stacking multiple convolutional layers on top
+of each other can increase the context width for each input  token  of the input
 sequence.
 
-As convolutional  layers do all  their  calculations  in parallel  and therefore
-cannot  distinguish  position of the input  tockens,  it is necessary to somehow
+As  convolutional layers do all their  calculations  in  parallel  and therefore
+cannot distinguish  position of  the input  tockens, it is  necessary to somehow
 encode the positional information in the input sequence before feeding it to the
 encoder. To this end, \citet{DBLP:journals/corr/GehringAGD16} proposes to feed a
 sequence $e_1, e_2, ..., e_m$ to the ecoder in which,
 
+
 \begin{equation*}
   e_i = w_i + l_i
 \end{equation*}
+
 
 where  $w_i$  is a word embedding on the vocabulary of the source  language  and
 $l_i$ is a positional embedding of the words of the source sentence.
@@ -850,20 +853,23 @@ The decoder  aims to capture a  distribution over the possible target vocabulary
 by  transforming its LSTM  hidden  state  $h_i$ via a linear layer  with weights
 $W_o$ and bias $b_o$,
 
+
 \begin{equation*}
   p(y_{i+1} \vert y_1, ..., y_i, \textbf{x}) =
   \text{softmax}(W_o h_{i + 1} + b_o)
 \end{equation*}
 
-The conditional  input  $c_i$ to the LSTM  is computed via  a simple dot-product
-soft-attention  mechanism, i.e.  a  dot-product  between  the set of  calculated
-attention weights and the sequence coming form CNN-c.  In  order to  calculate
-the attention scores, first the hidden  state $h_i$  is transformed  by a linear
-transformation  with weights  $W_d$  and bias $b_d$  to  match  the  size  of an
-embedding of  the  previous  target word  $g_i$ and then it is summed  with that
-embedding. Then this vector is used to calculate the  each attention score via a
-softmax over  the product  of  all these  neworks and  the sequence comming from
+
+The  conditional input $c_i$ to the  LSTM is  computed via  a simple dot-product
+soft-attention  mechanism,  i.e. a  dot-product  between  the set of  calculated
+attention weights and the  sequence coming form CNN-c. In order to calculate the
+attention  scores, first the  hidden  state  $h_i$  is  transformed  by a linear
+transformation  with weights  $W_d$  and bias  $b_d$  to match  the  size  of an
+embedding  of the  previous  target word $g_i$ and then it  is summed  with that
+embedding. Then  this vector is used to calculate the each attention score via a
+softmax over the  product  of all  these neworks and  the  sequence comming from
 CNN-a:
+
 
 \begin{align*}
   d_i &= W_d h_i + b_d + g_i \\
@@ -956,12 +962,11 @@ to the output of the corresponding layer $h^l_i$.
 
 
 \begin{align*}
-  c_i^l &= \sum_{j = 1}^{m}{a_{ij}^l(z_j^u + e_j)} \\
-  a_{ij}^l &= \frac{exp(d_i^l \cdot z_j^u)}
-  {\sum_{t = 1}^{m}{exp(d_i^l \cdot z_t^u)}} \\
-  d_i^l &= W_d^l h_i^l + b_d^l + g_i \\
-  \\
-  y_i^l &= h_i^l + c_i^l
+  y_i^l &= h_i^l + c_i^l \\
+  c_i^l &= \sum_{j = 1}^{m}{a_{ij}^l (z_j^u + e_j)} \\
+  a_{ij}^l &= \frac{exp (d_i^l \cdot z_j^u)}
+  {\sum_{t = 1}^{m}{exp (d_i^l \cdot z_t^u)}} \\
+  d_i^l &= W_d^l h_i^l + b_d^l + g_i
 \end{align*}
 
 
@@ -1010,10 +1015,10 @@ depthwise separable convolution can be written as follows:
 
 
 \begin{align*}
-  Conv(W, y)_{i,j} &= \sum_{k,l,m}^{K,L,M}{W_{k,l,m} \cdot y_{i+k,j+l,m}} \\
-  PointwiseConv(W, y)_{i,j} &= \sum_{m}^{M}{W_m \cdot y_{i,j,m}} \\
-  DepthwiseConv(W, y)_{i,j} &= \sum_{k,l}^{K,L}{W_{k,l} \cdot y_{i+k,j+l}} \\
-  SepConv(W_p, W_d, y)_{i,j} &=
+  Conv (W, y)_{i,j} &= \sum_{k,l,m}^{K,L,M}{W_{k,l,m} \cdot y_{i+k,j+l,m}} \\
+  PointwiseConv (W, y)_{i,j} &= \sum_{m}^{M}{W_m \cdot y_{i,j,m}} \\
+  DepthwiseConv (W, y)_{i,j} &= \sum_{k,l}^{K,L}{W_{k,l} \cdot y_{i+k,j+l}} \\
+  SepConv (W_p, W_d, y)_{i,j} &=
     PointwiseConv_{i,j}(W_p, DepthwiseConv_{i,j}(W_d, y))
 \end{align*}
 
@@ -1056,12 +1061,14 @@ outputs. Fig. \ref{fig:sn} illustrates the architecture of SliceNet model.
 \end{figure}
 
 
-The convolution modules in SliceNet use rectified linear units (ReLU) as non-linearities. Besides the ReLU activations are followed by a normalization layer. Therefore a complete convolution module is defined as,
+The convolution modules in  SliceNet  use rectified linear units  (ReLU) as non-
+linearities. Besides the ReLU activations are followed by a normalization layer.
+Therefore a complete convolution module is defined as,
 
 
 \begin{align*}
-  ConvStep_{d,s}(W, x) &= LN(SepConv_{d,s}(W, ReLU(x))) \\
-  LN(x) &= \frac{G}{\sigma(x)}(x - \mu(x)) + B
+  ConvStep_{d,s}(W, x) &= LN (SepConv_{d,s}(W, ReLU (x))) \\
+  LN (x) &= \frac{G}{\sigma (x)}(x - \mu (x)) + B
 \end{align*}
 
 
@@ -1070,8 +1077,8 @@ signal to the input sequence. This signal is defined as follows,
 
 
 \begin{align*}
-  timing(t, 2d) &= sin(t/1000^{2d/depth}) \\
-  timing(t, 2d + 1) &= cos(t/1000^{2d/depth})
+  timing (t, 2d) &= sin (t/1000^{2d/depth}) \\
+  timing (t, 2d + 1) &= cos (t/1000^{2d/depth})
 \end{align*}
 
 
