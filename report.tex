@@ -348,6 +348,7 @@ used.
 
     \hline
   \end{tabular}
+  \caption{Translation evalution scores}
 \end{table}
 
 
@@ -796,38 +797,65 @@ and next sections we review a number of propsed techniques.
 
 \citet{DBLP:journals/corr/GehringAGD16}   proposes   an   encoder-decoder  model
 similar to that of \cite{bahdanau2014neural} in which the encoder is replaced by
-a convolutional neural network. In this  model, as in \cite{bahdanau2014neural},
-the decoder  is  a  long short-term  memory recurrent neural  network,  and  the
-encoder consists of  two one-dimensional  convolutional  networks:  One  network
-generates  a sequence  containing  the  encoded  information  about  fixed-sized
-contexts (of kernel  size), and the other computes the conditional input for the
-soft-attention  mechanism   connecting   the   encoder  and  the  decoder.  Fig.
-\ref{fig:convenc} schematically illustrates this architecture.
+a convolutional neural network. In this model, as  in \cite{bahdanau2014neural},
+the  decoder  is a  long short-term memory  recurrent  neural  network,  and the
+encoder  consists  of two  one-dimensional  convolutional  networks: One network
+(CNN-a) generates a  sequence containing  the encoded information about fixed-
+sized  contexts  (of  kernel  size),  and   the  other  (CNN-c)  computes  the
+conditional input  for the  soft-attention  mechanism connecting the encoder and
+the decoder. Fig. \ref{fig:convenc} schematically illustrates this architecture.
 
+The convolutional  networks in  the  encoder only  contain  convolutional layers
+without  any  pooling layer. This allows the  full input  sequence length to the
+encoder to be  retained. Moreover stacking multiple convolutional layers  on top
+of  each other can increase  the context width for each input token of the input
+sequence.
 
-The convolutional networks in the encoder only contain convolutional layers without any pooling layer. This allows the full input sequence length to the encoder to be retained. Moreover stacking multiple convolutional layers on top of each other can increase the context width for each input token of the input sequence.
-
-As convolutional layers do all their calculations in parallel and therefore cannot distinguish position of the input tockens, it is necessary to somehow encode the positional information in the input sequence before feeding it to the encoder. To this end, \citet{DBLP:journals/corr/GehringAGD16} proposes to feed a sequence $e_1, e_2, ..., e_m$ to the ecoder in which,
+As convolutional  layers do all  their  calculations  in parallel  and therefore
+cannot  distinguish  position of the input  tockens,  it is necessary to somehow
+encode the positional information in the input sequence before feeding it to the
+encoder. To this end, \citet{DBLP:journals/corr/GehringAGD16} proposes to feed a
+sequence $e_1, e_2, ..., e_m$ to the ecoder in which,
 
 \begin{equation*}
   e_i = w_i + l_i
 \end{equation*}
 
-where $w_i$ is a word embedding on the vocabulary of the source language and $l_i$ is a positional embedding of the words of the source sentence.
+where  $w_i$  is a word embedding on the vocabulary of the source  language  and
+$l_i$ is a positional embedding of the words of the source sentence.
 
-
-The model aims to capture the conditional prop
+The decoder  aims to capture a  distribution over the possible target vocabulary
+by  transforming its LSTM  hidden  state  $h_i$ via a linear layer  with weights
+$W_o$ and bias $b_o$,
 
 \begin{equation*}
   p(y_{i+1} \vert y_1, ..., y_i, \textbf{x}) =
   \text{softmax}(W_o h_{i + 1} + b_o)
 \end{equation*}
 
+The conditional  input  $c_i$ to the LSTM  is computed via  a simple dot-product
+soft-attention  mechanism, i.e.  a  dot-product  between  the set of  calculated
+attention weights and the sequence coming form CNN-c.  In  order to  calculate
+the attention scores, first the hidden  state $h_i$  is transformed  by a linear
+transformation  with weights  $W_d$  and bias $b_d$  to  match  the  size  of an
+embedding of  the  previous  target word  $g_i$ and then it is summed  with that
+embedding. Then this vector is used to calculate the  each attention score via a
+softmax over  the product  of  all these  neworks and  the sequence comming from
+CNN-a:
 
-BLEU score for various WMT tasks:
+\begin{align*}
+  d_i &= W_d h_i + b_d + g_i \\
+  z_i &= \text{CNN-a}(e_i) \\
+  c_i &= \sum_{j = 1}^{T}{a_{ij}\text{CNN-c}(e_j)} \\
+  a_{ij} &= \frac{exp(d_i^T z_j)}{\sum_{t = 1}^{m}{exp(d_i^T z_t)}}
+\end{align*}
 
 
-\begin{center}
+The experimental results show that this architecture's performance is comparable to that of bi-directional recurrent neural networks while achieving two times speed up in generation of target translation.
+
+
+\begin{table}
+  \center
   \begin{tabular}{lrrr}
   \hline
     Encoder & WMT'16 en-ro & WMT'15 en-de & WMT'14 en-fr \\
@@ -836,15 +864,19 @@ BLEU score for various WMT tasks:
     Convolutional & 27.8 & 24.3 & 35.7 \\
   \hline
   \end{tabular}
-\end{center}
+  \caption{Performance comparison of convoluional encoder model with a bi-directional neural network in terms of BLEU score}
+\end{table}
 
 
-\begin{align*}
-  z_i &= \text{CNN-a}(e_i) \\
-  c_i &= \sum_{j = 1}^{T}{a_{ij}\text{CNN-c}(e)_j} \\
-  a_{ij} &= \frac{exp(d_i^T z_j)}{\sum_{t = 1}^{m}{exp(d_i^T z_t)}} \\
-  d_i &= W_d h_i + b_d + g_i
-\end{align*}
+Another interesting observation is that in recurrent neural networks the learned attention scores are sharp but do not necessarily represent a correct alignment, while for convolutional encoders the scores are less focused but still indicate an approximate source location. Fig. \ref{fig:atts} illustrates the learned attention scores for a sentence from WMT'15 English-German translation using a 2-layer BiLSTM and a convolutional encoder with 15-layer CNN-a and 5-layer CNN-c.
+
+
+\begin{figure}
+  \center
+  \includegraphics[width=\textwidth]{img/atts}
+  \caption{Attention scores for a BiLSTM (top) and a convolutional encoder (bottom)}
+  \label{fig:atts}
+\end{figure}
 
 
 \subsection{Convolutional Sequence to Sequence Learning}
